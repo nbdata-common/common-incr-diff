@@ -1,6 +1,6 @@
-package com.qunar.spark.diff.api.impl.irregular
+package com.qunar.spark.diff.impl.irregular
 
-import com.qunar.spark.diff.api.DiffTracer
+import com.qunar.spark.diff.api.scala.DiffTracer
 
 
 /**

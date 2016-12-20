@@ -1,4 +1,4 @@
-package com.qunar.spark.base.json
+package com.qunar.spark.diff.base.json
 
 import java.io.{Reader, Writer}
 
