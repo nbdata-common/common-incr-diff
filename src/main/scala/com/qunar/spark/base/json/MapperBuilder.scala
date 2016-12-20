@@ -1,11 +1,11 @@
 package com.qunar.spark.base.json
 
-import java.util.concurrent.Callable
+import java.lang.Long
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.core.{JsonGenerator, JsonParser}
 import com.fasterxml.jackson.databind.{DeserializationFeature, MapperFeature, ObjectMapper, SerializationFeature}
-import com.google.common.cache.{Cache, CacheBuilder, CacheLoader, LoadingCache}
+import com.google.common.cache.{CacheBuilder, CacheLoader, LoadingCache}
 import com.qunar.spark.base.json.JsonFeature.JsonFeatureValue
 
 /**
@@ -64,9 +64,11 @@ private[spark] object MapperBuilder extends Serializable {
   // 默认的JsonFeature配置模板
   private val defaultFeatures: Long = JsonFeature.defaults
 
-  private val cache: Cache[java.lang.Long, ObjectMapper] = CacheBuilder.newBuilder()
+  private val cache: LoadingCache[Long, ObjectMapper] = CacheBuilder.newBuilder()
     .maximumSize(100)
-    .build()
+    .build(new CacheLoader[Long, ObjectMapper]() {
+      override def load(key: Long): ObjectMapper = buildMapperInternal(key)
+    })
 
   private def buildMapperInternal(features: Long): ObjectMapper = {
     val mapper = new ObjectMapper
@@ -88,11 +90,7 @@ private[spark] object MapperBuilder extends Serializable {
   }
 
   private def buildMapper(features: Long): ObjectMapper = {
-    cache.get(features, new Callable[ObjectMapper] {
-      override def call(): ObjectMapper = {
-        buildMapperInternal(features)
-      }
-    })
+    cache.get(features)
   }
 
 }
