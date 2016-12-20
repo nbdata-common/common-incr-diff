@@ -9,7 +9,7 @@ import scala.language.implicitConversions
   * 用于标记可编辑的json特性
   * copied from qunar.common.api by @miao.yang and customize it
   */
-object JsonFeature extends Enumeration {
+private[spark] object JsonFeature extends Enumeration {
 
   type JsonFeature = Value
 
@@ -36,15 +36,14 @@ object JsonFeature extends Enumeration {
   val defaults: Long = {
     var flags = 0
     for (f <- values if f.enabledByDefault) {
-      flags |= f.getMask
+      flags |= f.mask
     }
 
     flags
   }
 
-  case class JsonFeatureValue private(@BeanProperty feature: AnyRef, enabledByDefault: Boolean) extends Val {
+  sealed case class JsonFeatureValue (feature: AnyRef, enabledByDefault: Boolean) extends Val {
 
-    @BeanProperty
     val mask = 1 << id
 
     def isEnabled(flags: Long): Boolean = (flags & mask) != 0

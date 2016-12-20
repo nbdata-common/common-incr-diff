@@ -1,19 +1,20 @@
 package com.qunar.spark.base.json
 
-import MapperBuilder._
+import java.util.concurrent.Callable
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.core.{JsonGenerator, JsonParser}
 import com.fasterxml.jackson.databind.{DeserializationFeature, MapperFeature, ObjectMapper, SerializationFeature}
-import com.google.common.cache.{CacheBuilder, CacheLoader, LoadingCache}
+import com.google.common.cache.{Cache, CacheBuilder, CacheLoader, LoadingCache}
 import com.qunar.spark.base.json.JsonFeature.JsonFeatureValue
 
 /**
   * 定制ObjectMapper的工厂
   * copied from qunar.common.api by @miao.yang and customize it
   */
-class MapperBuilder {
+private[spark] class MapperBuilder extends Serializable {
 
-  private var buildFeature = defaultFeatures
+  private var buildFeature = MapperBuilder.defaultFeatures
 
   def enable(jf: JsonFeatureValue): MapperBuilder = {
     buildFeature = jf.enable(buildFeature)
@@ -40,18 +41,18 @@ class MapperBuilder {
     this
   }
 
-  def build(features: Long): ObjectMapper = buildMapper(features)
+  def build(features: Long): ObjectMapper = MapperBuilder.buildMapper(features)
 
   def build: ObjectMapper = build(buildFeature)
 
   /**
     * 构造默认的ObjectMapper
     */
-  def buildDefault: ObjectMapper = build(defaultFeatures)
+  def buildDefault: ObjectMapper = build(MapperBuilder.defaultFeatures)
 
 }
 
-object MapperBuilder {
+private[spark] object MapperBuilder extends Serializable {
 
   def create: MapperBuilder = new MapperBuilder
 
@@ -63,33 +64,35 @@ object MapperBuilder {
   // 默认的JsonFeature配置模板
   private val defaultFeatures: Long = JsonFeature.defaults
 
-  private val cache: LoadingCache[Long, ObjectMapper] = CacheBuilder.newBuilder()
+  private val cache: Cache[java.lang.Long, ObjectMapper] = CacheBuilder.newBuilder()
     .maximumSize(100)
-    .build(new CacheLoader[Long, ObjectMapper]() {
-      override def load(key: Long): ObjectMapper = buildMapperInternal(key)
-    })
+    .build()
 
   private def buildMapperInternal(features: Long): ObjectMapper = {
     val mapper = new ObjectMapper
     for (jf <- JsonFeature.values) {
-      configure(mapper, jf.getFeature, jf.isEnabled(features))
+      configure(mapper, jf.feature, jf.isEnabled(features))
     }
     mapper
   }
 
   private def configure(mapper: ObjectMapper, feature: AnyRef, state: Boolean) {
     feature match {
-      case SerializationFeature => mapper.configure(feature.asInstanceOf[SerializationFeature], state)
-      case DeserializationFeature => mapper.configure(feature.asInstanceOf[DeserializationFeature], state)
-      case JsonParser.Feature => mapper.configure(feature.asInstanceOf[JsonParser.Feature], state)
-      case JsonGenerator.Feature => mapper.configure(feature.asInstanceOf[JsonGenerator.Feature], state)
-      case MapperFeature => mapper.configure(feature.asInstanceOf[MapperFeature], state)
-      case Include => if (state) mapper.setSerializationInclusion(feature.asInstanceOf[Include])
+      case feature: SerializationFeature => mapper.configure(feature.asInstanceOf[SerializationFeature], state)
+      case feature: DeserializationFeature => mapper.configure(feature.asInstanceOf[DeserializationFeature], state)
+      case feature: JsonParser.Feature => mapper.configure(feature.asInstanceOf[JsonParser.Feature], state)
+      case feature: JsonGenerator.Feature => mapper.configure(feature.asInstanceOf[JsonGenerator.Feature], state)
+      case feature: MapperFeature => mapper.configure(feature.asInstanceOf[MapperFeature], state)
+      case feature: Include => if (state) mapper.setSerializationInclusion(feature.asInstanceOf[Include])
     }
   }
 
   private def buildMapper(features: Long): ObjectMapper = {
-    cache.get(features)
+    cache.get(features, new Callable[ObjectMapper] {
+      override def call(): ObjectMapper = {
+        buildMapperInternal(features)
+      }
+    })
   }
 
 }
