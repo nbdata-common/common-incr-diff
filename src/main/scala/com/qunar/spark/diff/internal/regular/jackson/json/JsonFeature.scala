@@ -1,4 +1,4 @@
-package com.qunar.spark.diff.base.json
+package com.qunar.spark.diff.internal.regular.jackson.json
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.{JsonGenerator, JsonParser}
@@ -9,7 +9,7 @@ import scala.language.implicitConversions
   * 用于标记可编辑的json特性
   * copied from qunar.common.api by @miao.yang and customize it
   */
-private[spark] object JsonFeature extends Enumeration {
+private[jackson] object JsonFeature extends Enumeration {
 
   type JsonFeature = Value
 

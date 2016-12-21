@@ -1,4 +1,4 @@
-package com.qunar.spark.diff.impl.irregular
+package com.qunar.spark.diff.internal.irregular
 
 import com.qunar.spark.diff.api.scala.DiffTracer
 

@@ -1,4 +1,4 @@
-package com.qunar.spark.diff.base.json
+package com.qunar.spark.diff.internal.regular.jackson.json
 
 import java.lang.Long
 
@@ -6,14 +6,13 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.core.{JsonGenerator, JsonParser}
 import com.fasterxml.jackson.databind.{DeserializationFeature, MapperFeature, ObjectMapper, SerializationFeature}
 import com.google.common.cache.{CacheBuilder, CacheLoader, LoadingCache}
-import JsonFeature.JsonFeatureValue
-import com.qunar.spark.diff.base.json.JsonFeature.JsonFeatureValue
+import com.qunar.spark.diff.internal.regular.jackson.json.JsonFeature.JsonFeatureValue
 
 /**
   * 定制ObjectMapper的工厂
   * copied from qunar.common.api by @miao.yang and customize it
   */
-private[spark] class MapperBuilder extends Serializable {
+private[jackson] class MapperBuilder extends Serializable {
 
   private var buildFeature = MapperBuilder.defaultFeatures
 

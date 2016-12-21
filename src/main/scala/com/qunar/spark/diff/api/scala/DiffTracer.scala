@@ -1,7 +1,7 @@
 package com.qunar.spark.diff.api.scala
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.qunar.spark.diff.impl.regular.JacksonDiffTracer
+import com.qunar.spark.diff.internal.regular.jackson.JacksonDiffTracer
 
 /**
   * incr-diff的泛化抽象
@@ -10,7 +10,7 @@ trait DiffTracer[T] extends Serializable {
 
   /**
     * 比较两个实体(target1,target2)是否是不同的
-    * 这里两个实体将被当作POJO
+    * 这里两个实体将被当作Plain Ordinary Java Object
     */
   def isDifferent(target1: T, target2: T): Boolean
 
@@ -29,6 +29,6 @@ object DiffTracer {
     *
     * @see com.fasterxml.jackson.databind.JsonNode
     */
-  def apply(target1: JsonNode, target2: JsonNode): Boolean = new JacksonDiffTracer[_].isDifferent(target1, target2)
+  def apply(target1: JsonNode, target2: JsonNode): Boolean = new JacksonDiffTracer[Any].isDifferent(target1, target2)
 
 }
