@@ -1,5 +1,6 @@
 package com.qunar.spark.diff.base
 
+import java.lang.annotation.Annotation
 import java.lang.reflect.Field
 
 /**
@@ -7,8 +8,9 @@ import java.lang.reflect.Field
   * 一般认为,所映射的类是Plain Ordinary Java Object
   * 感知的内容包括:
   * 1. 自己的宿主类
-  * 2. 感知自己所映射的类
-  * 3. 感知自己在宿主类里所映射的Field
+  * 2. 自己所映射的类
+  * 3. 自己在宿主类里所映射的Field
+  * 4. 自己在宿主类里所拥有的所有Annotations
   */
 trait BeanAttrAware {
 
@@ -26,5 +28,12 @@ trait BeanAttrAware {
     * 感知自己在宿主类里所映射的Field
     */
   def mappedField: Field
+
+  /**
+    * 感知自己在宿主类里所拥有的所有Annotations
+    */
+  def allAnnotations: Seq[Annotation] = {
+    mappedField.getDeclaredAnnotations
+  }
 
 }
