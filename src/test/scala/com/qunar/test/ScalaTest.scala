@@ -1,7 +1,7 @@
 package com.qunar.test
 
 import com.qunar.spark.diff.api.scala.DiffTracer
-import com.qunar.spark.diff.base.regular.elements.{BooleanElement, CompositeElement, Element}
+import com.qunar.spark.diff.base.regular.elements.{BooleanElement, CompositeElement, Element, UnitElement}
 
 class ScalaTest {
 
@@ -17,6 +17,10 @@ class ScalaTest {
       case a: CompositeElement => a.name
     }
     val ddd: DiffTracer[Long] = DiffTracer[Long]()
+  }
+
+  def isDifferent[T](a: UnitElement[T], b: UnitElement[T]): Boolean = {
+    false
   }
 
 
