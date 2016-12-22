@@ -3,6 +3,8 @@ package com.qunar.spark.diff.internal.regular.jackson.json
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.{JsonGenerator, JsonParser}
 import com.fasterxml.jackson.databind._
+
+import scala.beans.BeanProperty
 import scala.language.implicitConversions
 
 /**
@@ -36,15 +38,15 @@ private[jackson] object JsonFeature extends Enumeration {
   val defaults: Long = {
     var flags = 0
     for (f <- values if f.enabledByDefault) {
-      flags |= f.mask
+      flags |= f.getMask
     }
 
     flags
   }
 
-  sealed case class JsonFeatureValue (feature: AnyRef, enabledByDefault: Boolean) extends Val {
+  sealed case class JsonFeatureValue (@BeanProperty feature: AnyRef, enabledByDefault: Boolean) extends Val {
 
-    val mask = 1 << id
+    @BeanProperty val mask = 1 << id
 
     def isEnabled(flags: Long): Boolean = (flags & mask) != 0
 

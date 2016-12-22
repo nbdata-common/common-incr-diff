@@ -52,7 +52,7 @@ private[jackson] class MapperBuilder extends Serializable {
 
 }
 
-private[spark] object MapperBuilder extends Serializable {
+private[jackson] object MapperBuilder extends Serializable {
 
   def create: MapperBuilder = new MapperBuilder
 
@@ -73,7 +73,7 @@ private[spark] object MapperBuilder extends Serializable {
   private def buildMapperInternal(features: Long): ObjectMapper = {
     val mapper = new ObjectMapper
     for (jf <- JsonFeature.values) {
-      configure(mapper, jf.feature, jf.isEnabled(features))
+      configure(mapper, jf.getFeature, jf.isEnabled(features))
     }
     mapper
   }

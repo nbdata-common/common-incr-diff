@@ -19,7 +19,7 @@ class ScalaTest {
     val ddd: DiffTracer[Long] = DiffTracer[Long]()
   }
 
-  def isDifferent[T](a: UnitElement[T], b: UnitElement[T]): Boolean = {
+  def isDifferent[T <: Comparable[T]](a: UnitElement[T], b: UnitElement[T]): Boolean = {
     false
   }
 

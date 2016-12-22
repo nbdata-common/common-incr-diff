@@ -1,13 +1,20 @@
 package com.qunar.spark.diff.base.regular.elements
 
-import java.lang.{Long, Double, Float, Byte, Short}
+import java.lang.{Byte, Double, Float, Long, Short}
+import javax.validation.constraints.NotNull
+
+import com.google.common.base.Preconditions
 import com.qunar.spark.diff.base.regular.elements.NumberType.NumberType
 
 /**
   * 数值类型的泛化与统一(实现Comparable[GenericNumber]接口以适配UnitElement的入参)
   * 统一Int,Long,Double,Float,Byte,Short等类型
+  *
+  * @param value 需要被包装的数值,不允许为null,否则构造失败,异常抛出
   */
-class GenericNumber(private val value: Number) extends Comparable[GenericNumber] {
+class GenericNumber(@NotNull private val value: Number) extends Comparable[GenericNumber] {
+
+  Preconditions.checkNotNull(value)
 
   /**
     * 匹配该数值的实际类型(Int,Long,Double,Float,Byte,Short等)
@@ -49,7 +56,7 @@ class GenericNumber(private val value: Number) extends Comparable[GenericNumber]
     } else if (anotherNumber.numberType != this.numberType) {
       1
     } else {
-      0//todo
+      0 //todo
     }
   }
 

@@ -7,7 +7,7 @@ import com.qunar.spark.diff.base.regular.elements.UnitElement
 /**
   * 默认diff比较器
   */
-class DefaultDiffer(@NotNull private val decorateDiffer: Differ) extends Differ(decorateDiffer) {
+class DefaultDiffer(@NotNull private val decoratedDiffer: Differ) extends Differ(decoratedDiffer) {
 
   /**
     * 默认的比较行为即是比较两个element.value是否不相等
@@ -15,7 +15,7 @@ class DefaultDiffer(@NotNull private val decorateDiffer: Differ) extends Differ(
     * @return 不相等:true  相等:false
     */
   override def isDifferent[T <: Comparable[T]](element1: UnitElement[T], element2: UnitElement[T]): Boolean = {
-    decorateDiffer.isDifferent(element1, element2) || element1.value.compareTo(element2.value) != 0
+    decoratedDiffer.isDifferent(element1, element2) || element1.value.compareTo(element2.value) != 0
   }
 
 }
