@@ -26,7 +26,7 @@ object Differ {
 
 }
 
-object DifferFactory {
+private[compare] object DifferFactory {
 
   def generateDiffer: Differ = {
     null

@@ -1,8 +1,8 @@
-package com.qunar.spark.diff.internal.regular.jackson
+package com.qunar.spark.diff.internal.impl.regular.jackson
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.qunar.spark.diff.base.compare.Differ
-import com.qunar.spark.diff.internal.regular.RegularDiffTracer
+import com.qunar.spark.diff.internal.impl.regular.RegularDiffTracer
 
 /**
   * 适用于Jackson的incr-diff实现类

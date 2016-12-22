@@ -15,7 +15,7 @@ trait UnitElement[T <: Comparable[T]] extends Element {
 
 object UnitElement {
 
-  def actualType[T](element: UnitElement[T]): UnitElementType = {
+  def actualType[T <: Comparable[T]](element: UnitElement[T]): UnitElementType = {
     Preconditions.checkNotNull(element)
     element match {
       case element: NumericElement => UnitElementType.NUMERIC_ELEMENT

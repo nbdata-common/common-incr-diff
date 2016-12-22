@@ -1,4 +1,4 @@
-package com.qunar.spark.diff.internal.regular.jackson.json
+package com.qunar.spark.diff.internal.impl.regular.jackson.json
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.{JsonGenerator, JsonParser}

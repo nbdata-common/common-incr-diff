@@ -1,4 +1,4 @@
-package com.qunar.spark.diff.internal.regular.jackson.json
+package com.qunar.spark.diff.internal.impl.regular.jackson.json
 
 import java.lang.Long
 
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.core.{JsonGenerator, JsonParser}
 import com.fasterxml.jackson.databind.{DeserializationFeature, MapperFeature, ObjectMapper, SerializationFeature}
 import com.google.common.cache.{CacheBuilder, CacheLoader, LoadingCache}
-import com.qunar.spark.diff.internal.regular.jackson.json.JsonFeature.JsonFeatureValue
+import JsonFeature.JsonFeatureValue
 
 /**
   * 定制ObjectMapper的工厂

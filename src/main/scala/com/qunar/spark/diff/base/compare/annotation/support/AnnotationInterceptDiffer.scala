@@ -1,7 +1,8 @@
-package com.qunar.spark.diff.base.compare
+package com.qunar.spark.diff.base.compare.annotation.support
 
 import javax.validation.constraints.NotNull
 
+import com.qunar.spark.diff.base.compare.Differ
 import com.qunar.spark.diff.base.regular.elements.UnitElement
 
 /**

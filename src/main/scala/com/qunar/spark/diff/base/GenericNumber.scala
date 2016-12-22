@@ -1,10 +1,10 @@
-package com.qunar.spark.diff.base.regular.elements
+package com.qunar.spark.diff.base
 
 import java.lang.{Byte, Double, Float, Long, Short}
 import javax.validation.constraints.NotNull
 
 import com.google.common.base.Preconditions
-import com.qunar.spark.diff.base.regular.elements.NumberType.NumberType
+import com.qunar.spark.diff.base.NumberType.NumberType
 
 /**
   * 数值类型的泛化与统一(实现Comparable[GenericNumber]接口以适配UnitElement的入参)

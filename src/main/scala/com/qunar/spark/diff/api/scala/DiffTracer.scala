@@ -1,7 +1,7 @@
 package com.qunar.spark.diff.api.scala
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.qunar.spark.diff.internal.regular.jackson.JacksonDiffTracer
+import com.qunar.spark.diff.internal.impl.regular.jackson.JacksonDiffTracer
 
 /**
   * incr-diff的泛化抽象
@@ -16,6 +16,9 @@ trait DiffTracer[T] extends Serializable {
 
 }
 
+/**
+  * scala api: DifferTracer工厂
+  */
 object DiffTracer {
 
   /**
