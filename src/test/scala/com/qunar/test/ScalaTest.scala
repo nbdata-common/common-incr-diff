@@ -3,8 +3,8 @@ package com.qunar.test
 import java.lang.reflect.Field
 
 import com.qunar.spark.diff.api.scala.DiffTracer
-import com.qunar.spark.diff.base.BeanAttrAware
-import com.qunar.spark.diff.base.regular.elements.{BooleanElement, CompositeElement, Element}
+import com.qunar.spark.diff.base.regular.elements.{BooleanElement, CompositeElement, Element, UnitElement}
+import com.qunar.spark.diff.ext.BeanAttrAware
 
 class ScalaTest {
 
@@ -24,8 +24,18 @@ class ScalaTest {
 
   @org.junit.Test
   def test2(): Unit = {
+    isDifferent(new BooleanElement(true) {
+      override def name: String = "sss"
+    }, new BooleanElement(false) {
+      override def name: String = "sss"
+    })
+
     val ss: Class[_] = new SS().hostClass
     Console.println()
+  }
+
+  def isDifferent[T <: Comparable[T]](a: UnitElement[T], b: UnitElement[T]): Boolean = {
+    false
   }
 
 }

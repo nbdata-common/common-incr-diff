@@ -1,6 +1,4 @@
-package com.qunar.spark.diff.base.regular.elements.annotation.support
-
-import com.qunar.spark.diff.base.BeanAttrAware
+package com.qunar.spark.diff.ext
 
 /**
   * 实现此trait后,(Element)对自己在宿主类里所拥有的所有Annotations有所感知
