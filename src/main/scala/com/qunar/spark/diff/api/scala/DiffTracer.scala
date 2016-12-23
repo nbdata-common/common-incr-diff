@@ -30,7 +30,7 @@ object DiffTracer {
     * 当传入两个com.fasterxml.jackson.databind.JsonNode,
     * 默认创建JacksonDiffTracer实例并调用其isDifferent方法
     *
-    * @see com.fasterxml.jackson.databind.JsonNode
+    * @see [[com.fasterxml.jackson.databind.JsonNode]]
     */
   def apply(target1: JsonNode, target2: JsonNode): Boolean = new JacksonDiffTracer[Any].isDifferent(target1, target2)
 

@@ -2,12 +2,17 @@ package com.qunar.spark.diff.base.compare.regular
 
 import javax.validation.constraints.NotNull
 
+import com.google.common.base.Preconditions
 import com.qunar.spark.diff.base.regular.elements.UnitElement
 
 /**
   * diff比较器的行为抽象
+  *
+  * @param decoratedDiffer 被装饰的前置比较器,不允许为null,否则构造失败,异常抛出
   */
 abstract class Differ(@NotNull private val decoratedDiffer: Differ) {
+
+  Preconditions.checkNotNull(decoratedDiffer)
 
   /**
     * 用于比较两个UnitElement是否不同

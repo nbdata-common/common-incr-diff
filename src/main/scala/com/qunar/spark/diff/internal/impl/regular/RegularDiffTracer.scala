@@ -16,7 +16,7 @@ abstract class RegularDiffTracer[T] extends DiffTracer[T] {
     * 统一递归结构的diff方法
     * <p/>
     * Element类型的入参作为递归结构的抽象基础类型,
-    * 使该方法可以在统一的high level层面上作逻辑处理,屏蔽了底层参数的类型差异化.
+    * 使该方法可以在统一的high level层面上作逻辑处理,屏蔽了底层数据源的类型差异化.
     * 所有递归结构的DiffTracer的继承者们只需要实现从泛型入参T到Element的转换
     * 即可间接实现diff功能.
     */
