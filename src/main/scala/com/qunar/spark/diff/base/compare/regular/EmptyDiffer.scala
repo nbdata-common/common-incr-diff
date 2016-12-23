@@ -1,7 +1,7 @@
-package com.qunar.spark.diff.base.compare
+package com.qunar.spark.diff.base.compare.regular
 
-import com.qunar.spark.diff.base.regular.elements.UnitElementType.UnitElementType
 import com.qunar.spark.diff.base.regular.elements.UnitElement
+import com.qunar.spark.diff.base.regular.elements.UnitElementType.UnitElementType
 
 /**
   * 空比较器

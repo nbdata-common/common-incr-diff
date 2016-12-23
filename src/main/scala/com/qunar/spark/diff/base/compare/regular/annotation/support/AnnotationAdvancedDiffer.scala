@@ -1,14 +1,17 @@
-package com.qunar.spark.diff.base.compare.annotation.support
+package com.qunar.spark.diff.base.compare.regular.annotation.support
 
+import java.lang.reflect.Field
 import javax.validation.constraints.NotNull
 
-import com.qunar.spark.diff.base.compare.Differ
+import com.qunar.spark.diff.base.compare.regular.Differ
 import com.qunar.spark.diff.base.regular.elements.UnitElement
+import com.qunar.spark.diff.base.regular.elements.ext.api.ExtUnitElement
+import com.qunar.spark.diff.ext.AnnotationAware
 
 /**
-  * 带有注解拦截的diff比较器
+  * 带有注解增强功能的diff比较器
   */
-abstract class AnnotationInterceptDiffer(@NotNull private val decoratedDiffer: Differ) extends Differ(decoratedDiffer) {
+abstract class AnnotationAdvancedDiffer(@NotNull private val decoratedDiffer: Differ) extends Differ(decoratedDiffer) {
 
   /**
     * 判断当前注解是否对指定元素生效
@@ -44,7 +47,7 @@ abstract class AnnotationInterceptDiffer(@NotNull private val decoratedDiffer: D
     *
     * NOTICE:
     */
-  override final def isDifferent[T <: Comparable[T]](element1: UnitElement[T], element2: UnitElement[T]): Boolean = {
+  def isDifferent[T <: Comparable[T]](element1: UnitElement[T], element2: UnitElement[T]): Boolean = {
     decoratedDiffer.isDifferent(element1, element2) || (isAnnotationEffective(element1) && isDifferentUnderAnnotation(element1, element2))
   }
 

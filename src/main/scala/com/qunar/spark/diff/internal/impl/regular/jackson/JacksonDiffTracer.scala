@@ -1,7 +1,7 @@
 package com.qunar.spark.diff.internal.impl.regular.jackson
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.qunar.spark.diff.base.compare.Differ
+import com.qunar.spark.diff.base.compare.regular.Differ
 import com.qunar.spark.diff.internal.impl.regular.RegularDiffTracer
 
 /**

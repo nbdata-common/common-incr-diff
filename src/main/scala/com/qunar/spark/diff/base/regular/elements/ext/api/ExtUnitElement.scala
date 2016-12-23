@@ -3,11 +3,14 @@ package com.qunar.spark.diff.base.regular.elements.ext.api
 import com.qunar.spark.diff.base.regular.elements.UnitElement
 
 /**
-  * 拓展的UnitElement
+  * UnitElement的拓展接口
   *
-  * 使用装饰器模式,以解决
+  * 引入一个被装饰者decoratedElement,并在其上包装方法,拓展功能
   */
 abstract class ExtUnitElement[T <: Comparable[T]](private val decoratedElement: UnitElement[T]) extends UnitElement[T] {
 
+  override def value: T = decoratedElement.value
+
+  override def name: String = decoratedElement.name
 
 }

@@ -1,7 +1,7 @@
 package com.qunar.spark.diff.internal.impl.regular
 
 import com.qunar.spark.diff.api.scala.DiffTracer
-import com.qunar.spark.diff.base.compare.Differ
+import com.qunar.spark.diff.base.compare.regular.Differ
 import com.qunar.spark.diff.base.regular.elements.Element
 
 /**

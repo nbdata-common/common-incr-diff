@@ -1,4 +1,4 @@
-package com.qunar.spark.diff.base.compare
+package com.qunar.spark.diff.base.compare.regular
 
 import javax.validation.constraints.NotNull
 
