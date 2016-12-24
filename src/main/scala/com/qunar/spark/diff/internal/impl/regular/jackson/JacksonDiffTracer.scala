@@ -3,6 +3,7 @@ package com.qunar.spark.diff.internal.impl.regular.jackson
 import com.fasterxml.jackson.databind.JsonNode
 import com.qunar.spark.diff.base.compare.regular.Differ
 import com.qunar.spark.diff.base.regular.elements.Element
+import com.qunar.spark.diff.base.sort.Sorter
 import com.qunar.spark.diff.internal.impl.regular.RegularDiffTracer
 import com.qunar.spark.diff.internal.impl.regular.jackson.json.JsonMapper
 
@@ -12,6 +13,8 @@ import com.qunar.spark.diff.internal.impl.regular.jackson.json.JsonMapper
 private[diff] class JacksonDiffTracer[T] extends RegularDiffTracer[T] {
 
   override protected val differ: Differ = Differ()
+
+  override protected val sorter: Sorter = Sorter()
 
   override def isDifferent(target1: T, target2: T): Boolean = {
     val node1 = JsonMapper.readTree(JsonMapper.writeValueAsString(target1))
@@ -26,7 +29,7 @@ private[diff] class JacksonDiffTracer[T] extends RegularDiffTracer[T] {
   }
 
   private def jsonNodeToElement(node: JsonNode): Element = {
-
+    null
   }
 
 }

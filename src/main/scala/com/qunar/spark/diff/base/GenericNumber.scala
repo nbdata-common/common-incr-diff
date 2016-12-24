@@ -62,6 +62,14 @@ class GenericNumber(@NotNull private val value: Number) extends Comparable[Gener
 
 }
 
+object GenericNumber {
+
+  def apply(value: Number): GenericNumber = new GenericNumber(value)
+
+  def apply(): GenericNumber = new GenericNumber(0)
+
+}
+
 object NumberType extends Enumeration {
 
   type NumberType = Value

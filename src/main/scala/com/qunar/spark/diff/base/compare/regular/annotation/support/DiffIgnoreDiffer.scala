@@ -22,9 +22,9 @@ class DiffIgnoreDiffer(@NotNull private val decoratedDiffer: Differ) extends Ann
   }
 
   override protected def isElementHasAnnotation(element: AnnotationAware): Boolean = {
-    val annotations = element.mappedField.getDeclaredAnnotations
+    val annotations = element.allAnnotations
     for (annotation <- annotations) {
-      if (annotation == DiffIgnore) {
+      if (annotation.isInstanceOf[DiffIgnore]) {
         true
       }
     }

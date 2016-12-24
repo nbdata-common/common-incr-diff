@@ -3,6 +3,8 @@ package com.qunar.spark.diff.ext
 import java.lang.annotation.Annotation
 import java.lang.reflect.{Field, Method}
 
+import com.google.common.base.Optional
+
 /**
   * 实现此trait后,(Element)对自己的宿主类,自己所直接映射的类及类相关属性能够有所感知
   * 一般认为,所映射的类是Plain Ordinary Java Object
@@ -15,29 +17,37 @@ import java.lang.reflect.{Field, Method}
   */
 trait BeanAttrAware {
 
+  val emptyAnnotationField: Field = classOf[EmptyAnnotationField].getField("emptyAnnotation")
+
   /**
     * 感知自己的宿主类
     */
-  def hostClass[_]: Class[_]
+  def hostClass: Class[_]
 
   /**
     * 感知自己所映射的类
     */
-  def selfClass[_]: Class[_]
+  def selfClass: Class[_]
 
   /**
     * 感知自己所映射的类中的所有方法
     */
-  def allMethods: Seq[Method] = selfClass.getDeclaredMethods
+  def allMethods: Seq[Method]
 
   /**
     * 感知自己在宿主类里所映射的Field
     */
-  def mappedField: Field
+  def mappedField: Optional[Field]
 
   /**
     * 感知自己在宿主类里所拥有的所有Annotations
     */
-  def allAnnotations: Seq[Annotation] = mappedField.getDeclaredAnnotations
+  def allAnnotations: Seq[Annotation] = mappedField.or(emptyAnnotationField).getDeclaredAnnotations
+
+}
+
+class EmptyAnnotationField {
+
+  val emptyAnnotation: String = "field with empty annotation"
 
 }

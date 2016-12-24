@@ -10,9 +10,9 @@ import java.lang.reflect.Method
   */
 trait AnnotationAware extends BeanAttrAware {
 
-  override def hostClass[_]: Class[_] = throw new UnsupportedOperationException("method not implemented in this Class")
+  override def hostClass: Class[_] = throw new UnsupportedOperationException("method not implemented in this Class")
 
-  override def selfClass[_]: Class[_] = throw new UnsupportedOperationException("method not implemented in this Class")
+  override def selfClass: Class[_] = throw new UnsupportedOperationException("method not implemented in this Class")
 
   override def allMethods: Seq[Method] = throw new UnsupportedOperationException("method not implemented in this Class")
 

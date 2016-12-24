@@ -1,6 +1,6 @@
 package com.qunar.test
 
-import java.lang.reflect.Field
+import java.lang.reflect.{Field, Method}
 
 import com.qunar.spark.diff.api.scala.DiffTracer
 import com.qunar.spark.diff.base.regular.elements.{BooleanElement, CompositeElement, Element, UnitElement}
@@ -13,7 +13,7 @@ class ScalaTest {
     val a: CompositeElement = new CompositeElement {
       override def name: String = "sss"
 
-      override def sortElement(): Seq[Element] = null
+      override def listChildrenElements(): Seq[Element] = null
     }
     a match {
       case a: JavaTest => a.name
@@ -46,12 +46,12 @@ class Tess(private val interValue: Boolean) extends BooleanElement(interValue) {
 
 class SS extends BeanAttrAware {
 
-  override def hostClass[_]: Class[_] = {
-    this.getClass
-  }
+  override def hostClass: Class[_] = classOf[SS]
 
-  override def selfClass[_]: Class[_] = ???
+  override def selfClass: Class[_] = ???
 
   override def mappedField: Field = ???
+
+  override def allMethods: Seq[Method] = ???
 
 }

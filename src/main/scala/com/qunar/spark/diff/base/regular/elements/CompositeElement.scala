@@ -6,8 +6,8 @@ package com.qunar.spark.diff.base.regular.elements
 trait CompositeElement extends Element {
 
   /**
-    * 对该node下所有直接子node按给定方法排序
+    * 列举出该复合元素下所有直接孩子Element
     */
-  def sortElement(): Seq[Element]
+  def listChildrenElements(): Seq[Element]
 
 }
