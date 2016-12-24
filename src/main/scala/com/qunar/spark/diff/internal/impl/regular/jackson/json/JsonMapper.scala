@@ -20,12 +20,12 @@ private[jackson] object JsonMapper extends Serializable {
   // 默认JsonFeature模板的ObjectMapperBuilder
   private val mapper: ObjectMapper = MapperBuilder.create.buildDefault
 
-  def writeValue(writer: Writer, obj: AnyRef) {
+  def writeValue(writer: Writer, obj: Any) {
     Preconditions.checkNotNull(writer)
     mapper.writeValue(writer, obj)
   }
 
-  def writeValueAsString(obj: AnyRef): String = mapper.writeValueAsString(obj)
+  def writeValueAsString(obj: Any): String = mapper.writeValueAsString(obj)
 
   def readValue[T](json: String, clazz: Class[T]): T = {
     mapper.readValue(json, clazz)

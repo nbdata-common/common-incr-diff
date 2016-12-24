@@ -8,7 +8,11 @@ import com.qunar.spark.diff.ext.AnnotationAware
 
 /**
   * 带有注解增强功能的diff比较器的通用抽象
+  * 在比较器链中添加此类型的Differ可以拦截带特定的注解的element并作增强服务
   *
+  * 实现一个带注解增强的differ需要继承该抽象类,并实现:
+  * [[isAnnotationApplicableForElement]],[[isElementHasAnnotation]],[[isDifferentUnderAnnotation]]
+  * 三个方法即可.
   */
 abstract class AnnotationAdvancedDiffer(@NotNull private val decoratedDiffer: Differ) extends Differ(decoratedDiffer) {
 
@@ -54,7 +58,7 @@ abstract class AnnotationAdvancedDiffer(@NotNull private val decoratedDiffer: Di
     * 之所以这样设计,主要是考虑到我们的Differ模块被设计为"链式"的(依托于装饰器模式),当自己返回false时并不会对全局
     * result产生"一票否决"式的影响,仅当自己返回true时才能对全局result产生"一锤定音"式的效果.换句话说,在这样的
     * "比较链"中插拔一个返回false的Differ,对整体的isDifferent方法是"free of side-effect"的.
-    * 所以,当传入一个非AnnotationAware时返回false以消除side-effect,使我们可以放心地在比较器链中添加
+    * 所以,当传入一个非AnnotationAware时这里返回false以消除side-effect,使我们可以放心地在比较器链中添加
     * AnnotationAdvancedDiffer.
     *
     * 此方法不允许被重写,子类的isDifferent都必须遵从此方法的逻辑:
