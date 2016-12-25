@@ -11,6 +11,6 @@ abstract class ExtCompositeElement(private val decoratedElement: CompositeElemen
 
   override def listChildrenElements(): Seq[Element] = decoratedElement.listChildrenElements()
 
-  override def name: String = decoratedElement.name
+  override def getName: String = decoratedElement.getName
 
 }

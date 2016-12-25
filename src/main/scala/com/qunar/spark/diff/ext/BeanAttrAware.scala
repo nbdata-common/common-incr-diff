@@ -17,7 +17,8 @@ import com.google.common.base.Optional
   */
 trait BeanAttrAware {
 
-  val emptyAnnotationField: Field = classOf[EmptyAnnotationField].getField("emptyAnnotation")
+  // 懒加载一个不携带任何注解的Field
+  lazy val emptyAnnotationField: Field = classOf[EmptyAnnotationField].getField("emptyAnnotation")
 
   /**
     * 感知自己的宿主类
@@ -41,13 +42,19 @@ trait BeanAttrAware {
 
   /**
     * 感知自己在宿主类里所拥有的所有Annotations
+    *
+    * NOTICE: 如果mappedField方法返回的Optional[Field]是Absent类型,则此方法默认返回空序列
     */
   def allAnnotations: Seq[Annotation] = mappedField.or(emptyAnnotationField).getDeclaredAnnotations
 
 }
 
+/**
+  * 构造一个类,此类只有一个字段,且该字段不携带任何注解,用于获取一个空的[[Seq<Annotation>]]
+  */
 class EmptyAnnotationField {
 
+  // 该String类型的字段不带任何注解
   val emptyAnnotation: String = "field with empty annotation"
 
 }

@@ -6,7 +6,7 @@ import com.google.common.base.Preconditions
 import com.qunar.spark.diff.base.regular.elements.UnitElement
 
 /**
-  * diff比较器的行为抽象
+  * 递归结构中,diff比较器的行为抽象
   *
   * @param decoratedDiffer 被装饰的前置比较器,不允许为null,否则构造失败,异常抛出
   */
@@ -16,7 +16,10 @@ abstract class Differ(@NotNull private val decoratedDiffer: Differ) {
 
   /**
     * 用于比较两个UnitElement是否不同
-    * 适用于此方法的类型包括:NumericElement,TextElement,BooleanElement
+    * 适用于此方法的类型包括:
+    * [[com.qunar.spark.diff.base.regular.elements.NumericElement]]
+    * [[com.qunar.spark.diff.base.regular.elements.TextElement]]
+    * [[com.qunar.spark.diff.base.regular.elements.BooleanElement]]
     *
     * @throws java.lang.IllegalArgumentException 当传入的两个UnitElement的实际类型不同时抛出此异常
     */

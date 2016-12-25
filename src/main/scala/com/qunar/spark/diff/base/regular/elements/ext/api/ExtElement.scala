@@ -9,6 +9,6 @@ import com.qunar.spark.diff.base.regular.elements.Element
   */
 abstract class ExtElement(private val decoratedElement: Element) extends Element {
 
-  override def name: String = decoratedElement.name
+  override def getName: String = decoratedElement.getName
 
 }

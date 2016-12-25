@@ -9,6 +9,6 @@ trait Element extends Serializable {
   /**
     * (在指定的diff目标中)该元素的唯一标识
     */
-  def name: String
+  def getName: String
 
 }

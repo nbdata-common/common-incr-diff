@@ -11,6 +11,6 @@ abstract class ExtUnitElement[T <: Comparable[T]](private val decoratedElement: 
 
   override def value: T = decoratedElement.value
 
-  override def name: String = decoratedElement.name
+  override def getName: String = decoratedElement.getName
 
 }

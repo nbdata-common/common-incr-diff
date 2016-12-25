@@ -7,11 +7,17 @@ import com.qunar.spark.diff.base.regular.elements.NumericElement
 /**
   * 适用于Jackson的NumericElement
   */
-final class JacksonNumericElement(private val interValue: GenericNumber,
-                                  private val jsonNode: ValueNode) extends NumericElement(interValue) {
+private[jackson] final class JacksonNumericElement(private val interValue: GenericNumber,
+                                                   private val name: String) extends NumericElement(interValue) {
 
-  def this(jsonNode: ValueNode) = this(GenericNumber(jsonNode.longValue()), jsonNode)
+  def this(jsonNode: ValueNode, name: String) = this(GenericNumber(jsonNode.longValue()), name)
 
-  override def name: String = ""
+  override def getName: String = name
+
+}
+
+private[jackson] object JacksonNumericElement {
+
+  def apply(): JacksonNumericElement = null
 
 }

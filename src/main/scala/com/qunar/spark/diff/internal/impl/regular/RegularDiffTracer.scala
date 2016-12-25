@@ -5,16 +5,18 @@ import com.qunar.spark.diff.base.compare.regular.Differ
 import com.qunar.spark.diff.base.regular.elements.Element
 import com.qunar.spark.diff.base.sort.Sorter
 
+import scala.reflect.ClassTag
+
 /**
   * 规则(递归)结构的通用抽象类
   */
-abstract class RegularDiffTracer[T] extends DiffTracer[T] {
+abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
 
   // 用于diff的比较器,由子类负责实例化
-  protected val differ: Differ
+  protected val innerDiffer: Differ
 
   // 用于diff的字段排序器,由子类负责实例化
-  protected val sorter: Sorter
+  protected val innerSorter: Sorter
 
   /**
     * 统一递归结构的diff方法
