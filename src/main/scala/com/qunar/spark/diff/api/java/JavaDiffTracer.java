@@ -42,15 +42,18 @@ public final class JavaDiffTracer<T> {
         return false;
     }
 
+    /**
+     * scala-java转换的驱动封装,隐藏复杂的api调用
+     */
     private static final class ScalaConverterDriver {
 
         private static <T> DiffTracer<T> defaultDiffTracer() {
-            ClassTag<T> tag = scala.reflect.ClassTag$.MODULE$.apply(getT());
+            ClassTag<T> tag = scala.reflect.ClassTag$.MODULE$.apply(getClassOfT());
             return DiffTracer$.MODULE$.apply(tag);
         }
 
         @SuppressWarnings("unchecked")
-        private static <T> Class<T> getT() {
+        private static <T> Class<T> getClassOfT() {
             return (Class<T>) new TypeReference<T>() {
             }.getType();
         }
