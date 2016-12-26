@@ -14,3 +14,10 @@ private[jackson] final class JacksonCompositeElement(private val childrenElement
 
 }
 
+private[jackson] object JacksonCompositeElement {
+
+  def apply(): JacksonCompositeElement = {
+
+  }
+
+}

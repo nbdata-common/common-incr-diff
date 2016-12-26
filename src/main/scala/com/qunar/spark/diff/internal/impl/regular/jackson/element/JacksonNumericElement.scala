@@ -1,6 +1,7 @@
 package com.qunar.spark.diff.internal.impl.regular.jackson.element
 
-import com.fasterxml.jackson.databind.node.ValueNode
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.{ContainerNode, ValueNode}
 import com.qunar.spark.diff.base.GenericNumber
 import com.qunar.spark.diff.base.regular.elements.NumericElement
 
@@ -18,6 +19,15 @@ private[jackson] final class JacksonNumericElement(private val interValue: Gener
 
 private[jackson] object JacksonNumericElement {
 
-  def apply(): JacksonNumericElement = null
+  def apply(jsonNode: JsonNode, name: String): JacksonNumericElement = {
+    jsonNode match {
+      case jsonNode: ContainerNode =>
+
+    }
+  }
+
+  private def getActualValue(jsonNode: JsonNode): Number = {
+
+  }
 
 }

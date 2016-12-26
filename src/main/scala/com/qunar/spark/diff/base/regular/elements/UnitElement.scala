@@ -15,6 +15,11 @@ trait UnitElement[T <: Comparable[T]] extends Element {
 
 object UnitElement {
 
+  /**
+    * 获得UnitElement的实际类型(Numeric,Text或Boolean)
+    *
+    * @return UnitElement的枚举类型[[UnitElementType]]
+    */
   def actualType[T <: Comparable[T]](element: UnitElement[T]): UnitElementType = {
     Preconditions.checkNotNull(element)
     element match {
@@ -26,6 +31,9 @@ object UnitElement {
 
 }
 
+/**
+  * UnitElement的枚举类型
+  */
 object UnitElementType extends Enumeration {
 
   type UnitElementType = Value

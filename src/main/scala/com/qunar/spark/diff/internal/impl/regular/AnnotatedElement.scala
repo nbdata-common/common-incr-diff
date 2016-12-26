@@ -2,7 +2,6 @@ package com.qunar.spark.diff.internal.impl.regular
 
 import java.lang.reflect.Field
 
-import com.google.common.base.Optional
 import com.qunar.spark.diff.base.regular.elements.Element
 import com.qunar.spark.diff.base.regular.elements.ext.api.ExtElement
 import com.qunar.spark.diff.ext.AnnotationAware
@@ -11,13 +10,14 @@ import com.qunar.spark.diff.ext.AnnotationAware
   * [功能拓展] 递归结构中,拥有注解感知能力的元素
   *
   * @param field 这里在构造器中直接引入field,以简化类的结构,然后将具体的构造过程交给伴生对象的工厂方法
+  * @note 类似的设计在[[com.qunar.spark.diff.internal]]包的其他类中也有体现:
+  * @see [[com.qunar.spark.diff.internal.impl.regular.jackson.element]]
   */
 class AnnotatedElement private(private val decoratedElement: Element,
                                private val field: Field) extends ExtElement(decoratedElement)
   with AnnotationAware {
 
-  //todo 改成scala的Option
-  override def mappedField: Optional[Field] = Optional.fromNullable(field)
+  override def mappedField: Option[Field] = Option(field)
 
 }
 

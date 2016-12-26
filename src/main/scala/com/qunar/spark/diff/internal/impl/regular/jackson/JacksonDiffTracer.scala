@@ -32,6 +32,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
     ct.runtimeClass
   }
 
+
   /* main api and its dependencies */
 
   /**
@@ -75,10 +76,11 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
     */
   private def jsonNodeToElement(node: JsonNode, wrapElement: (Element) => Element): Element = {
     // 最终要返回的目标Element
-    val result: Element = null
-    wrapElement(result)
-    //    val stack: mutable.Stack[(JsonNode, Element)] = mutable.Stack.newBuilder[(JsonNode, Element)].+=()
+    val result: Element = wrapElement(null)
+    val stack: mutable.Stack[(JsonNode, Element)] = mutable.Stack[(JsonNode, Element)]((node, result))
+    while (stack.nonEmpty) {
 
+    }
     result
   }
 
