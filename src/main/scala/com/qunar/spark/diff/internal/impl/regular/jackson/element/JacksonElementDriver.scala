@@ -65,7 +65,7 @@ private[jackson] object JacksonElementDriver {
     */
   def makeElement(jsonNode: JsonNode, name: String): Element = {
     jsonNode match {
-      case jsonNode: ContainerNode => toCompositeElement(jsonNode, name)
+      case jsonNode: ContainerNode[_] => toCompositeElement(jsonNode, name)
       case jsonNode: ValueNode => toUnitElement(jsonNode, name)
       case _ => throw new IllegalArgumentException(
         "the jsonNode param does not confirm to the correct type BooleanNode which JacksonBooleanElement needs")
@@ -79,7 +79,7 @@ private[jackson] object JacksonElementDriver {
     //不指定name,默认是根元素
     val defaultName = "root"
     jsonNode match {
-      case jsonNode: ContainerNode => makeElement(jsonNode, defaultName)
+      case jsonNode: ContainerNode[_] => makeElement(jsonNode, defaultName)
       // 如果默认的根元素是ValueNode,则拦截目标Element并将其转为CompositeElement
       case jsonNode: ValueNode =>
         // 唯一的孩子Element
@@ -96,7 +96,7 @@ private[jackson] object JacksonElementDriver {
     */
   def toCompositeElement(jsonNode: JsonNode, name: String): CompositeElement = {
     jsonNode match {
-      case jsonNode: ContainerNode => JacksonCompositeElement(name)
+      case jsonNode: ContainerNode[_] => JacksonCompositeElement(name)
       case _ => throw new IllegalArgumentException(
         "the jsonNode param does not confirm to the correct type BooleanNode which JacksonBooleanElement needs")
     }
@@ -105,7 +105,7 @@ private[jackson] object JacksonElementDriver {
   /**
     * 转换成UnitElement
     */
-  def toUnitElement(jsonNode: JsonNode, name: String): UnitElement = {
+  def toUnitElement(jsonNode: JsonNode, name: String): UnitElement[_] = {
     jsonNode match {
       case jsonNode: TextNode => JacksonTextElement(jsonNode, name)
       case jsonNode: NumericNode => JacksonNumericElement(jsonNode, name)

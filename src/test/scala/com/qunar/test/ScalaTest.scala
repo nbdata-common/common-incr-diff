@@ -53,7 +53,7 @@ class SS extends BeanAttrAware {
 
   override def selfClass: Class[_] = ???
 
-  override def mappedField: Optional[Field] = ???
+  override def mappedField: Option[Field] = None
 
   override def allMethods: Seq[Method] = ???
 

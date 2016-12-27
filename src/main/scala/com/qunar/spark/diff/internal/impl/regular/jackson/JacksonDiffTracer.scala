@@ -100,13 +100,12 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
       // 栈顶元组的第二项:Element
       val topElement = pointer._2
       topElement match {
-        case topElement: UnitElement => // 原子元素作空处理
         case topElement: CompositeElement =>
           // entries的类型:(String, JsonNode)
           val entries = JacksonElementDriver.childrenNodesWithName(pointer._1)
-          // 预扩容
           childrenElements.reset()
-          preProbableExpansion(childrenElements, entries.iterator)
+          // todo 预扩容
+          // preProbableExpansion(childrenElements, entries.iterator)
           // 提取element
           for (entry <- entries) {
             val element = wrapElement(JacksonElementDriver.makeElement(entry._2, entry._1))
@@ -115,6 +114,8 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
           }
           // 设置孩子Elements
           topElement.setChildrenElements(childrenElements.compactCopy)
+
+        case _ => // 其他情况作空处理
       }
     }
 

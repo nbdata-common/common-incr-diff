@@ -8,7 +8,7 @@ import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element}
 private[jackson] final class JacksonCompositeElement(private var interChildrenElements: Seq[Element],
                                                      private val name: String) extends CompositeElement {
 
-  def this(name: String) = this(_, name)
+  def this(name: String) = this(Seq(), name)
 
   override def childrenElements(): Seq[Element] = interChildrenElements
 

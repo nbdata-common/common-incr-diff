@@ -39,6 +39,8 @@ private[jackson] object JacksonNumericElement {
       case JsonParser.NumberType.DOUBLE => jsonNode.doubleValue()
       case JsonParser.NumberType.FLOAT => jsonNode.floatValue()
       case JsonParser.NumberType.LONG => jsonNode.longValue()
+      case JsonParser.NumberType.BIG_DECIMAL => jsonNode.doubleValue()
+      case JsonParser.NumberType.BIG_INTEGER => jsonNode.doubleValue()
     }
   }
 
