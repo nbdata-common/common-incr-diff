@@ -10,7 +10,6 @@ import com.qunar.spark.diff.internal.impl.regular.jackson.element.JacksonElement
 import com.qunar.spark.diff.internal.impl.regular.jackson.json.JsonMapper
 
 import scala.collection.mutable
-import scala.collection.mutable.ArrayBuffer
 import scala.reflect.ClassTag
 
 /**
@@ -35,7 +34,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
   }
 
 
-  /* main api and its dependencies */
+  /* main api */
 
   /**
     * 重写DiffTracer中的public方法
@@ -44,13 +43,6 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
     val node1 = beanToJsonNode(target1)
     val node2 = beanToJsonNode(target2)
     isDifferentInternal(node1, node2, annotatedWrap _)
-  }
-
-  /**
-    * 将java bean转为JsonNode
-    */
-  private def beanToJsonNode(target: T): JsonNode = {
-    JsonMapper.readTree(JsonMapper.writeValueAsString(target))
   }
 
   /**
@@ -66,6 +58,16 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
 
   /* inner implement */
 
+  /**
+    * 将java bean转为JsonNode
+    */
+  private def beanToJsonNode(target: T): JsonNode = {
+    JsonMapper.readTree(JsonMapper.writeValueAsString(target))
+  }
+
+  /**
+    * 内部的isDifferent处理
+    */
   private def isDifferentInternal(target1: JsonNode, target2: JsonNode, wrapElement: (Element) => Element = direct): Boolean = {
     val node1 = jsonNodeToElement(target1, wrapElement)
     val node2 = jsonNodeToElement(target2, wrapElement)
@@ -90,7 +92,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
     // 当前处理的指针,指向处理的对象
     var pointer = stack.top
     // 孩子Elements列表(初始化size = 32)
-    var childrenElements = ReAssignableArrayBuffer[Element](32)
+    val childrenElements = ReAssignableArrayBuffer[Element](32)
 
     while (stack.nonEmpty) {
       pointer = stack.top
@@ -102,18 +104,31 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
         case topElement: CompositeElement =>
           // entries的类型:(String, JsonNode)
           val entries = JacksonElementDriver.childrenNodesWithName(pointer._1)
+          preProbableExpansion(childrenElements, entries.iterator)
           // 提取element
           for (entry <- entries) {
             val element = wrapElement(JacksonElementDriver.makeElement(entry._1, entry._2))
             stack.push((entry._2, element))
+            childrenElements += element
           }
-          // 重置孩子Elements
-          topElement.setChildrenElements(childrenElements)
+          // 设置孩子Elements
+          topElement.setChildrenElements(childrenElements.compactCopy)
       }
     }
 
     // 返回目标
     result
+  }
+
+  /**
+    * 预先处理可能的扩容,确保一次到位,避免重复GC
+    */
+  private def preProbableExpansion(childrenElements: ReAssignableArrayBuffer[Element], expectData: Iterator[_]) = {
+    var childrenNum = 0
+    while (expectData.hasNext) {
+      childrenNum += 1
+    }
+    childrenElements.preProbableExpansion(childrenNum)
   }
 
 

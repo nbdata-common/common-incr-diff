@@ -46,7 +46,16 @@ class ReAssignableArrayBuffer[A](initSize: Int) extends Seq[A] {
     this
   }
 
+  /**
+    * 预处理可能存在的扩容
+    */
+  def preProbableExpansion(newSize: Int): Unit = {
+    innerArray.sizeHint(newSize)
+  }
 
+  def compactCopy: Seq[A] = {
+    Seq()
+  }
 
   /* 实现Seq[A]的方法 */
 
