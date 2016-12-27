@@ -53,12 +53,24 @@ class ReAssignableArrayBuffer[A](initSize: Int) extends Seq[A] {
     innerArray.sizeHint(newSize)
   }
 
+  /**
+    * 紧凑型复制,只复制当前有效的数据
+    */
   def compactCopy: Seq[A] = {
-    Seq()
+    val builder = Seq.newBuilder[A]
+    val iter = iterator
+    while (iter.hasNext) {
+      builder += iter.next
+    }
+
+    builder.result
   }
 
   /* 实现Seq[A]的方法 */
 
+  /**
+    * 此迭代器只能迭代当前有效的内容
+    */
   override def iterator: Iterator[A] = {
     limit = position
     Iterators.limit[A](innerArray.iterator, limit)
