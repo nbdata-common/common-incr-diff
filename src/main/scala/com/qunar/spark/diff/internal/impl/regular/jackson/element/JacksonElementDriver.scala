@@ -35,11 +35,26 @@ private[jackson] object JacksonElementDriver {
     */
   def childrenNodesWithName(jsonNode: JsonNode): Iterable[(String, JsonNode)] = {
     jsonNodesBuffer.reset()
-    val jsonNodesEntryIter = jsonNode.fields()
+    jsonNode match {
+      case jsonNode: ObjectNode =>
+        val jsonNodesEntryIter = jsonNode.fields()
+        while (jsonNodesEntryIter.hasNext) {
+          val entry = jsonNodesEntryIter.next()
+          jsonNodesBuffer += ((entry.getKey, entry.getValue))
+        }
 
-    while (jsonNodesEntryIter.hasNext) {
-      val entry = jsonNodesEntryIter.next()
-      jsonNodesBuffer += ((entry.getKey, entry.getValue))
+      case jsonNode: ArrayNode =>
+        var count = 0
+        val jsonNodesEntryIter = jsonNode.elements()
+        while (jsonNodesEntryIter.hasNext) {
+          val entry = jsonNodesEntryIter.next()
+          jsonNodesBuffer += ((count.toString, entry))
+          count += 1
+        }
+
+      case _ =>
+        throw new IllegalArgumentException(
+          "the jsonNode param does not confirm to the correct type ContainerNode.")
     }
 
     jsonNodesBuffer
@@ -48,7 +63,7 @@ private[jackson] object JacksonElementDriver {
   /**
     * 创建一个普通元素
     */
-  def makeElement(name: String, jsonNode: JsonNode): Element = {
+  def makeElement(jsonNode: JsonNode, name: String): Element = {
     jsonNode match {
       case jsonNode: ContainerNode => toCompositeElement(jsonNode, name)
       case jsonNode: ValueNode => toUnitElement(jsonNode, name)
@@ -64,10 +79,12 @@ private[jackson] object JacksonElementDriver {
     //不指定name,默认是根元素
     val defaultName = "root"
     jsonNode match {
-      case jsonNode: ContainerNode => makeElement(defaultName, jsonNode)
+      case jsonNode: ContainerNode => makeElement(jsonNode, defaultName)
       // 如果默认的根元素是ValueNode,则拦截目标Element并将其转为CompositeElement
       case jsonNode: ValueNode =>
-
+        // 唯一的孩子Element
+        val onlyChild = makeElement(jsonNode, "onlyChild")
+        JacksonCompositeElement(Seq(onlyChild), defaultName)
       case _ =>
         throw new IllegalArgumentException(
           "the jsonNode param does not confirm to the correct type BooleanNode which JacksonBooleanElement needs")
@@ -79,8 +96,7 @@ private[jackson] object JacksonElementDriver {
     */
   def toCompositeElement(jsonNode: JsonNode, name: String): CompositeElement = {
     jsonNode match {
-      case jsonNode: ObjectNode => JacksonCompositeElement(name)
-      case jsonNode: ArrayNode =>
+      case jsonNode: ContainerNode => JacksonCompositeElement(name)
       case _ => throw new IllegalArgumentException(
         "the jsonNode param does not confirm to the correct type BooleanNode which JacksonBooleanElement needs")
     }

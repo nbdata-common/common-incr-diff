@@ -16,10 +16,9 @@ trait DiffTracer[T] extends Serializable {
     * 比较两个实体(target1,target2)是否是不同的
     * 这里两个实体将被当作Plain Ordinary Java Object
     *
-    * NOTICE: 此方法开启了注解增强功能,可在T所对应的Class的字段上使用但不限于如下注解:
+    * NOTICE: 此方法开启了注解增强功能,可在T所对应的Class的字段上使用下面包内的注解:
     *
-    * @see [[com.qunar.spark.diff.api.annotation.DiffIgnore]]
-    * @see [[com.qunar.spark.diff.api.annotation.DiffRange]]
+    * @see [[com.qunar.spark.diff.api.annotation]]
     */
   def isDifferent(target1: T, target2: T): Boolean
 

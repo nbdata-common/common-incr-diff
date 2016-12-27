@@ -15,6 +15,8 @@ class ScalaTest {
       override def getName: String = "sss"
 
       override def childrenElements(): Seq[Element] = null
+
+      override def setChildrenElements(newChildrenElements: Seq[Element]): Unit = ???
     }
     a match {
       case a: JavaTest => a.getName

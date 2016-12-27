@@ -85,7 +85,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
     // 最终要返回的目标Element
     val result: Element = wrapElement(JacksonElementDriver.makeElement(node))
     // 初始化
-    val stack: mutable.Stack[(JsonNode, Element)] = mutable.Stack[(JsonNode, Element)]((node, result))
+    val stack: mutable.Stack[(JsonNode, Element)] = mutable.Stack((node, result))
 
     /* 以下为显式堆栈处理过程 */
 
@@ -104,10 +104,12 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
         case topElement: CompositeElement =>
           // entries的类型:(String, JsonNode)
           val entries = JacksonElementDriver.childrenNodesWithName(pointer._1)
+          // 预扩容
+          childrenElements.reset()
           preProbableExpansion(childrenElements, entries.iterator)
           // 提取element
           for (entry <- entries) {
-            val element = wrapElement(JacksonElementDriver.makeElement(entry._1, entry._2))
+            val element = wrapElement(JacksonElementDriver.makeElement(entry._2, entry._1))
             stack.push((entry._2, element))
             childrenElements += element
           }

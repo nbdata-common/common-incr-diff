@@ -8,7 +8,7 @@ import com.qunar.spark.diff.base.sort.Sorter
 import scala.reflect.ClassTag
 
 /**
-  * 规则(递归)结构的通用抽象类
+  * 递归结构的DiffTracer通用抽象类
   */
 abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
 
@@ -21,12 +21,13 @@ abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
   /**
     * 统一递归结构的diff方法
     * <p/>
-    * Element类型的入参作为递归结构的抽象基础类型,
+    * [[Element]]类型的入参作为递归结构的抽象基础类型,
     * 使该方法可以在统一的high level层面上作逻辑处理,屏蔽了底层数据源的类型差异化.
-    * 所有递归结构的DiffTracer的继承者们只需要实现从泛型入参T到Element的转换
+    * 所有递归结构的DiffTracer的继承者们只需要实现从泛型入参[[T]]到[[Element]]及其子类的转换
     * 即可间接实现diff功能.
     */
   protected def isDifferent(target1: Element, target2: Element): Boolean = {
+
     false
   }
 
