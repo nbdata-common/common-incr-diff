@@ -14,7 +14,7 @@ class ScalaTest {
     val a: CompositeElement = new CompositeElement {
       override def getName: String = "sss"
 
-      override def listChildrenElements(): Seq[Element] = null
+      override def childrenElements(): Seq[Element] = null
     }
     a match {
       case a: JavaTest => a.getName

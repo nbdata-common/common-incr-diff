@@ -9,13 +9,19 @@ import com.qunar.spark.diff.ext.AnnotationAware
 /**
   * [功能拓展] 递归结构中,拥有注解感知能力的元素
   *
-  * @param field 这里在构造器中直接引入field,以简化类的结构,然后将具体的构造过程交给伴生对象的工厂方法
-  * @note 类似的设计在[[com.qunar.spark.diff.internal]]包的其他类中也有体现:
+  * @param field            这里在构造器中直接引入field,以简化类的结构,然后将具体的构造过程交给伴生对象的工厂方法
+  * @param decoratedElement 被装饰的元素,这里设置为可变型的,是为了能够复用实例,节约内存空间
+  *                         <p/>
+  * @note [[field]],[[decoratedElement]]这种类似的设计在[[com.qunar.spark.diff.internal]]包的其他类中也有体现:
   * @see [[com.qunar.spark.diff.internal.impl.regular.jackson.element]]
   */
-class AnnotatedElement private(private val decoratedElement: Element,
+class AnnotatedElement private(private var decoratedElement: Element,
                                private val field: Field) extends ExtElement(decoratedElement)
   with AnnotationAware {
+
+  def resetDecoratedElement(newElement: Element): Unit = {
+    this.decoratedElement = newElement
+  }
 
   override def mappedField: Option[Field] = Option(field)
 
@@ -30,7 +36,7 @@ object AnnotatedElement {
     */
   def apply(decoratedElement: Element, host: Any): AnnotatedElement = {
     val hostClass = host.getClass
-    apply(decoratedElement, hostClass)
+    AnnotatedElement(decoratedElement, hostClass)
   }
 
   /**

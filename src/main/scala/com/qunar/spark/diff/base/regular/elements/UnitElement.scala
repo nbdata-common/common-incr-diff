@@ -9,14 +9,18 @@ import com.qunar.spark.diff.base.regular.elements.UnitElementType.UnitElementTyp
   */
 trait UnitElement[T <: Comparable[T]] extends Element {
 
+  // 获取value
   def value: T
+
+  // 重置value
+  def setValue(newValue: T): Unit
 
 }
 
 object UnitElement {
 
   /**
-    * 获得UnitElement的实际类型(Numeric,Text或Boolean)
+    * 获得UnitElement的实际枚举类型(Numeric,Text或Boolean)
     *
     * @return UnitElement的枚举类型[[UnitElementType]]
     */
@@ -32,7 +36,7 @@ object UnitElement {
 }
 
 /**
-  * UnitElement的枚举类型
+  * UnitElement的枚举类型(Numeric,Text或Boolean)
   */
 object UnitElementType extends Enumeration {
 

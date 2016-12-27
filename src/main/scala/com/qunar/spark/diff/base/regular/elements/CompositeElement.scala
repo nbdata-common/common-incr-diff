@@ -8,6 +8,11 @@ trait CompositeElement extends Element {
   /**
     * 列举出该复合元素下所有直接孩子Element
     */
-  def listChildrenElements(): Seq[Element]
+  def childrenElements(): Seq[Element]
+
+  /**
+    * 重置该复合元素下的所有直接孩子Element
+    */
+  def setChildrenElements(newChildrenElements: Seq[Element]): Unit
 
 }

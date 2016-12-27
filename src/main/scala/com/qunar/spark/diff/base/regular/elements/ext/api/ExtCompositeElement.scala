@@ -9,7 +9,7 @@ import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element}
   */
 abstract class ExtCompositeElement(private val decoratedElement: CompositeElement) extends CompositeElement {
 
-  override def listChildrenElements(): Seq[Element] = decoratedElement.listChildrenElements()
+  override def childrenElements(): Seq[Element] = decoratedElement.childrenElements()
 
   override def getName: String = decoratedElement.getName
 

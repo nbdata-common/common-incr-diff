@@ -1,14 +1,16 @@
 package com.qunar.spark.diff.internal.impl.regular.jackson
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.qunar.spark.diff.base.ReAssignableArrayBuffer
 import com.qunar.spark.diff.base.compare.regular.Differ
-import com.qunar.spark.diff.base.regular.elements.Element
+import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element, UnitElement}
 import com.qunar.spark.diff.base.sort.Sorter
 import com.qunar.spark.diff.internal.impl.regular.{AnnotatedElement, RegularDiffTracer}
-import com.qunar.spark.diff.internal.impl.regular.jackson.element.JacksonNumericElement
+import com.qunar.spark.diff.internal.impl.regular.jackson.element.JacksonElementDriver
 import com.qunar.spark.diff.internal.impl.regular.jackson.json.JsonMapper
 
 import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 import scala.reflect.ClassTag
 
 /**
@@ -73,14 +75,44 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
   /**
     * JacksonDiffTracer的核心逻辑: 将JsonNode转换为Element
     * 这里使用显式堆栈的递归方式创建Element的层次关系,以提高程序执行的效率,映射到JsonNode的层次关系
+    * <p/>
+    * 堆栈的填充内容类型是(JsonNode, Element),其代表的意义是:
+    * 某个JsonNode所对应的Element
     */
   private def jsonNodeToElement(node: JsonNode, wrapElement: (Element) => Element): Element = {
     // 最终要返回的目标Element
-    val result: Element = wrapElement(null)
+    val result: Element = wrapElement(JacksonElementDriver.makeElement(node))
+    // 初始化
     val stack: mutable.Stack[(JsonNode, Element)] = mutable.Stack[(JsonNode, Element)]((node, result))
-    while (stack.nonEmpty) {
 
+    /* 以下为显式堆栈处理过程 */
+
+    // 当前处理的指针,指向处理的对象
+    var pointer = stack.top
+    // 孩子Elements列表(初始化size = 32)
+    var childrenElements = ReAssignableArrayBuffer[Element](32)
+
+    while (stack.nonEmpty) {
+      pointer = stack.top
+      stack.pop
+      // 栈顶元组的第二项:Element
+      val topElement = pointer._2
+      topElement match {
+        case topElement: UnitElement => // 原子元素作空处理
+        case topElement: CompositeElement =>
+          // entries的类型:(String, JsonNode)
+          val entries = JacksonElementDriver.childrenNodesWithName(pointer._1)
+          // 提取element
+          for (entry <- entries) {
+            val element = wrapElement(JacksonElementDriver.makeElement(entry._1, entry._2))
+            stack.push((entry._2, element))
+          }
+          // 重置孩子Elements
+          topElement.setChildrenElements(childrenElements)
+      }
     }
+
+    // 返回目标
     result
   }
 

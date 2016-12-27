@@ -2,6 +2,7 @@ package com.qunar.spark.diff.internal.impl.regular.jackson.element
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node._
+import com.qunar.spark.diff.base.ReAssignableArrayBuffer
 import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element, UnitElement}
 
 /**
@@ -23,27 +24,78 @@ import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element, Un
   */
 private[jackson] object JacksonElementDriver {
 
-  def toElement(jsonNode: JsonNode): Element = {
+  /**
+    * 用于[[childrenNodesWithName]]存储JsonNode数据
+    * NOTICE: 此组件是线程不安全的
+    */
+  private val jsonNodesBuffer = ReAssignableArrayBuffer[(String, JsonNode)](32)
+
+  /**
+    * 列举出给定jsonNode下的所有子JsonNode
+    */
+  def childrenNodesWithName(jsonNode: JsonNode): Iterable[(String, JsonNode)] = {
+    jsonNodesBuffer.reset()
+    val jsonNodesEntryIter = jsonNode.fields()
+
+    while (jsonNodesEntryIter.hasNext) {
+      val entry = jsonNodesEntryIter.next()
+      jsonNodesBuffer += ((entry.getKey, entry.getValue))
+    }
+
+    jsonNodesBuffer
+  }
+
+  /**
+    * 创建一个普通元素
+    */
+  def makeElement(name: String, jsonNode: JsonNode): Element = {
     jsonNode match {
-      case jsonNode: ValueNode => toUnitElement(jsonNode)
-      case jsonNode: ObjectNode => toCompositeElement(jsonNode)
-      case jsonNode: ArrayNode => {
-        toCompositeElement(jsonNode)
-      }
+      case jsonNode: ContainerNode => toCompositeElement(jsonNode, name)
+      case jsonNode: ValueNode => toUnitElement(jsonNode, name)
+      case _ => throw new IllegalArgumentException(
+        "the jsonNode param does not confirm to the correct type BooleanNode which JacksonBooleanElement needs")
     }
   }
 
-  def toCompositeElement(jsonNode: JsonNode): CompositeElement = {
+  /**
+    * 创建一个根元素
+    */
+  def makeElement(jsonNode: JsonNode): Element = {
+    //不指定name,默认是根元素
+    val defaultName = "root"
     jsonNode match {
-      case jsonNode:
+      case jsonNode: ContainerNode => makeElement(defaultName, jsonNode)
+      // 如果默认的根元素是ValueNode,则拦截目标Element并将其转为CompositeElement
+      case jsonNode: ValueNode =>
+
+      case _ =>
+        throw new IllegalArgumentException(
+          "the jsonNode param does not confirm to the correct type BooleanNode which JacksonBooleanElement needs")
     }
   }
 
-  def toUnitElement(jsonNode: JsonNode): UnitElement = {
+  /**
+    * 转换成CompositeElement
+    */
+  def toCompositeElement(jsonNode: JsonNode, name: String): CompositeElement = {
     jsonNode match {
-      case jsonNode: TextNode =>
-      case jsonNode: NumericNode => JacksonNumericElement(jsonNode)
-      case jsonNode: BooleanNode =>
+      case jsonNode: ObjectNode => JacksonCompositeElement(name)
+      case jsonNode: ArrayNode =>
+      case _ => throw new IllegalArgumentException(
+        "the jsonNode param does not confirm to the correct type BooleanNode which JacksonBooleanElement needs")
+    }
+  }
+
+  /**
+    * 转换成UnitElement
+    */
+  def toUnitElement(jsonNode: JsonNode, name: String): UnitElement = {
+    jsonNode match {
+      case jsonNode: TextNode => JacksonTextElement(jsonNode, name)
+      case jsonNode: NumericNode => JacksonNumericElement(jsonNode, name)
+      case jsonNode: BooleanNode => JacksonBooleanElement(jsonNode, name)
+      case _ => throw new IllegalArgumentException(
+        "the jsonNode param does not confirm to the correct type BooleanNode which JacksonBooleanElement needs")
     }
   }
 
