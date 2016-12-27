@@ -20,7 +20,7 @@ trait DiffTracer[T] extends Serializable {
     *
     * @see [[com.qunar.spark.diff.api.annotation]]
     */
-  def isDifferent(target1: T, target2: T): Boolean
+  def isDifferent(targetLeft: T, targetRight: T): Boolean
 
 }
 

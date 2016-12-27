@@ -15,6 +15,22 @@ trait UnitElement[T <: Comparable[T]] extends Element {
   // 重置value
   def setValue(newValue: T): Unit
 
+  override def compareTo(elem: Element): Int = {
+    elem match {
+      case elem: UnitElement[T] =>
+        if (value.compareTo(elem.value) == -1) {
+          -1
+        } else if (value.compareTo(elem.value) == 1) {
+          1
+        } else {
+          0
+        }
+
+      case _ =>
+        super.compareTo(elem)
+    }
+  }
+
 }
 
 object UnitElement {

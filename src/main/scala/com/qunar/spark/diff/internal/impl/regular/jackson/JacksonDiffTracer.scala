@@ -39,10 +39,10 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
   /**
     * 重写DiffTracer中的public方法
     */
-  override def isDifferent(target1: T, target2: T): Boolean = {
-    val node1 = beanToJsonNode(target1)
-    val node2 = beanToJsonNode(target2)
-    isDifferentInternal(node1, node2, annotatedWrap _)
+  override def isDifferent(targetLeft: T, targetRight: T): Boolean = {
+    val nodeLeft = beanToJsonNode(targetLeft)
+    val nodeRight = beanToJsonNode(targetRight)
+    isDifferentInternal(nodeLeft, nodeRight, annotatedWrap _)
   }
 
   /**
@@ -51,8 +51,8 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
     * NOTICE: 当外部直接调用此api时,将不会开启注解增强功能
     * 若想使用注解增强,请使用:[[com.qunar.spark.diff.api.scala.DiffTracer.isDifferent]]
     */
-  def isDifferent(target1: JsonNode, target2: JsonNode): Boolean = {
-    isDifferentInternal(target1, target2, direct _)
+  def isDifferent(targetLeft: JsonNode, targetRight: JsonNode): Boolean = {
+    isDifferentInternal(targetLeft, targetRight, direct _)
   }
 
 
@@ -115,7 +115,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
           // 设置孩子Elements
           topElement.setChildrenElements(childrenElements.compactCopy)
 
-        case _ => // 其他情况作空处理
+        case topElement: UnitElement[_] => // 其他情况作空处理
       }
     }
 

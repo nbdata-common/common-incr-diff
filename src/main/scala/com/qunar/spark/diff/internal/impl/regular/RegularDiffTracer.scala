@@ -2,9 +2,10 @@ package com.qunar.spark.diff.internal.impl.regular
 
 import com.qunar.spark.diff.api.scala.DiffTracer
 import com.qunar.spark.diff.base.compare.regular.Differ
-import com.qunar.spark.diff.base.regular.elements.Element
+import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element, UnitElement}
 import com.qunar.spark.diff.base.sort.Sorter
 
+import scala.collection.mutable
 import scala.reflect.ClassTag
 
 /**
@@ -26,9 +27,57 @@ abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
     * 所有递归结构的DiffTracer的继承者们只需要实现从泛型入参[[T]]到[[Element]]及其子类的转换
     * 即可间接实现diff功能.
     */
-  protected def isDifferent(target1: Element, target2: Element): Boolean = {
+  protected final def isDifferent(targetLeft: Element, targetRight: Element): Boolean = {
+    // 初始化
+    val stackLeft: mutable.Stack[Element] = mutable.Stack(targetLeft)
+    val stackRight: mutable.Stack[Element] = mutable.Stack(targetRight)
+    // 当前处理的指针,指向处理的对象
+    var pointerLeft = stackLeft.top
+    var pointerRight = stackRight.top
 
-    false
+    /* diff过程 */
+
+    while (stackLeft.nonEmpty && stackRight.nonEmpty) {
+      pointerLeft = stackLeft.top
+      pointerRight = stackRight.top
+      stackLeft.pop
+      stackRight.pop
+      (pointerLeft, pointerRight) match {
+        case pointers: (CompositeElement, CompositeElement) =>
+          val leftSorted = innerSorter.sort(pointers._1.childrenElements())
+          val rightSorted = innerSorter.sort(pointers._2.childrenElements())
+          if (!isDifferentInternal(leftSorted, rightSorted)) {
+            stackLeft.pushAll(leftSorted)
+            stackRight.pushAll(rightSorted)
+          } else {
+            true
+          }
+
+        case pointers: (UnitElement[_], UnitElement[_]) =>
+          isDifferentInternal(pointers._1, pointers._2)
+
+        case _ => true
+      }
+    }
+    // 跳出while循环,如果两者相同,理论上应该两个stack都为空
+    // 只要有一个不为空的stack,就是different的
+    if (stackLeft.nonEmpty || stackRight.nonEmpty) {
+      true
+    } else {
+      false
+    }
+  }
+
+  private def isDifferentInternal(left: Seq[Element], right: Seq[Element]): Boolean = {
+    true
+  }
+
+  private def isDifferentInternal(left: UnitElement[_], right: UnitElement[_]): Boolean = {
+    if (left.compareTo(right) == 0) {
+      false
+    } else {
+      true
+    }
   }
 
 }
