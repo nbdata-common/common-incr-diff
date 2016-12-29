@@ -11,14 +11,11 @@ trait Element extends Comparable[Element] with Serializable {
     */
   def getName: String
 
+  /**
+    * 最原始的Element之间的比较:就是比较两个Element的[[getName]]是否相同
+    */
   override def compareTo(elem: Element): Int = {
-    if (this.getName.compareTo(elem.getName) == -1) {
-      -1
-    } else if (this.getName.compareTo(elem.getName) == 1) {
-      1
-    } else {
-      0
-    }
+    if (this.getName.equals(elem.getName)) 0 else 1
   }
 
 }

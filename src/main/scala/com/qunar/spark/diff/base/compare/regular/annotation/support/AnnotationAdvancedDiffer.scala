@@ -2,8 +2,8 @@ package com.qunar.spark.diff.base.compare.regular.annotation.support
 
 import javax.validation.constraints.NotNull
 
-import com.qunar.spark.diff.base.compare.regular.Differ
-import com.qunar.spark.diff.base.regular.elements.UnitElement
+import com.qunar.spark.diff.base.compare.regular.AbstractDiffer
+import com.qunar.spark.diff.base.regular.elements.Element
 import com.qunar.spark.diff.ext.AnnotationAware
 
 /**
@@ -14,7 +14,7 @@ import com.qunar.spark.diff.ext.AnnotationAware
   * [[isAnnotationApplicableForElement]],[[isElementHasAnnotation]],[[isDifferentUnderAnnotation]]
   * 三个方法即可.
   */
-abstract class AnnotationAdvancedDiffer(@NotNull private val decoratedDiffer: Differ) extends Differ(decoratedDiffer) {
+abstract class AnnotationAdvancedDiffer(@NotNull private val decoratedDiffer: AbstractDiffer) extends AbstractDiffer(decoratedDiffer) {
 
   /**
     * 判断当前注解是否对指定元素生效
@@ -40,17 +40,17 @@ abstract class AnnotationAdvancedDiffer(@NotNull private val decoratedDiffer: Di
   /**
     * 判断在当前注解的特定规则下,两个待比较对象是否不同
     */
-  protected def isDifferentUnderAnnotation[T <: Comparable[T]](element1: UnitElement[T], element2: UnitElement[T]): Boolean
+  protected def isDifferentUnderAnnotation(element1: Element, element2: Element): Boolean
 
   /**
     * 判断元素是否带有注解感知功能
     */
-  private def isElementAnnotationAware[T <: Comparable[T]](element: UnitElement[T]): Boolean = {
+  private def isElementAnnotationAware(element: Element): Boolean = {
     element.isInstanceOf[AnnotationAware]
   }
 
   /**
-    * 注解增强的diff比较器:对[[com.qunar.spark.diff.base.compare.regular.Differ.isDifferent]]方法的标准实现
+    * 注解增强的diff比较器:对[[com.qunar.spark.diff.base.compare.regular.unit.UnitDiffer.compare]]方法的标准实现
     *
     * NOTICE: 为了保持和Differ的继承关系,此方法的入参仍然需要保持原有类型UnitElement[T <\: Comparable[T]].
     * 所以,为了确保传入的参数能够感知注解(实现AnnotationAware),本方法在内部实现了AnnotationAware类型的判断逻辑.
@@ -69,11 +69,10 @@ abstract class AnnotationAdvancedDiffer(@NotNull private val decoratedDiffer: Di
     *
     * 其中,第一点与后面三点是或的关系,后面三点之间是与的关系
     */
-  override final def isDifferent[T <: Comparable[T]](element1: UnitElement[T], element2: UnitElement[T]): Boolean = {
-    decoratedDiffer.isDifferent(element1, element2) ||
-      isElementAnnotationAware(element1) &&
-        isAnnotationEffectiveForElement(element1.asInstanceOf[AnnotationAware]) &&
-        isDifferentUnderAnnotation(element1, element2)
+  override protected final def compareInternal(element1: Element, element2: Element): Boolean = {
+    isElementAnnotationAware(element1) &&
+      isAnnotationEffectiveForElement(element1.asInstanceOf[AnnotationAware]) &&
+      isDifferentUnderAnnotation(element1, element2)
   }
 
 }

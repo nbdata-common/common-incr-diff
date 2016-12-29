@@ -17,17 +17,9 @@ trait UnitElement[T <: Comparable[T]] extends Element {
 
   override def compareTo(elem: Element): Int = {
     elem match {
-      case elem: UnitElement[T] =>
-        if (value.compareTo(elem.value) == -1) {
-          -1
-        } else if (value.compareTo(elem.value) == 1) {
-          1
-        } else {
-          0
-        }
-
-      case _ =>
-        super.compareTo(elem)
+      case elem: UnitElement[T] => if (super.compareTo(elem) != 0) 1 else if (value.compareTo(elem.value) == 0) 0 else 1
+      // 对于UnitElement,只要比较对象类型不同或类型参数不相同,则认为不同,默认返回1
+      case _ => 1
     }
   }
 
@@ -40,7 +32,7 @@ object UnitElement {
     *
     * @return UnitElement的枚举类型[[UnitElementType]]
     */
-  def actualType[T <: Comparable[T]](element: UnitElement[T]): UnitElementType = {
+  def actualType(element: UnitElement[_]): UnitElementType = {
     Preconditions.checkNotNull(element)
     element match {
       case element: NumericElement => UnitElementType.NUMERIC_ELEMENT

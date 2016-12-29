@@ -1,42 +1,42 @@
 package com.qunar.spark.diff.base.compare.regular
 
-import javax.validation.constraints.NotNull
-
-import com.google.common.base.Preconditions
-import com.qunar.spark.diff.base.regular.elements.UnitElement
+import com.qunar.spark.diff.base.compare.regular.composite.CompositeDiffer
+import com.qunar.spark.diff.base.compare.regular.unit.UnitDiffer
+import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element, UnitElement}
 
 /**
-  * 递归结构中,diff比较器的行为抽象
+  * 递归结构中的diff比较器(总控)
   *
-  * @param decoratedDiffer 被装饰的前置比较器,不允许为null,否则构造失败,异常抛出
+  * @param unitDiffer      用于UnitElement的比较器
+  * @param compositeDiffer 用于CompositeElement的比较器
   */
-abstract class Differ(@NotNull private val decoratedDiffer: Differ) {
+private[diff] final class Differ(private val unitDiffer: UnitDiffer,
+                                 private val compositeDiffer: CompositeDiffer) {
 
-  Preconditions.checkNotNull(decoratedDiffer)
-
-  /**
-    * 用于比较两个UnitElement是否不同
-    * 适用于此方法的类型包括:
-    * [[com.qunar.spark.diff.base.regular.elements.NumericElement]]
-    * [[com.qunar.spark.diff.base.regular.elements.TextElement]]
-    * [[com.qunar.spark.diff.base.regular.elements.BooleanElement]]
-    *
-    * @throws java.lang.IllegalArgumentException 当传入的两个UnitElement的实际类型不同时抛出此异常
-    */
   @throws(classOf[IllegalArgumentException])
-  def isDifferent[T <: Comparable[T]](element1: UnitElement[T], element2: UnitElement[T]): Boolean
+  def compare[T](element1: Element, element2: Element): Boolean = {
+    (element1, element2) match {
+      case elements: (UnitElement[_], UnitElement[_]) => unitDiffer.compare(elements._1, elements._2)
+      case elements: (CompositeElement, CompositeElement) => compositeDiffer.compare(elements._1, elements._2)
+      case _ => false
+    }
+  }
 
 }
 
-object Differ {
+private[diff] object Differ {
 
-  def apply(): Differ = DifferFactory.generateDiffer
+  def apply(): Differ = new Differ(DifferFactory.genUnitDiffer, DifferFactory.genCompositeDiffer)
 
 }
 
 private[compare] object DifferFactory {
 
-  def generateDiffer: Differ = {
+  def genUnitDiffer: UnitDiffer = {
+    null
+  }
+
+  def genCompositeDiffer: CompositeDiffer = {
     null
   }
 

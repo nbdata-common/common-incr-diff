@@ -52,32 +52,23 @@ abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
           } else {
             true
           }
-
+        // todo 如果是两个UnitElement,因为在
         case pointers: (UnitElement[_], UnitElement[_]) =>
-          isDifferentInternal(pointers._1, pointers._2)
-
         case _ => true
       }
     }
     // 跳出while循环,如果两者相同,理论上应该两个stack都为空
     // 只要有一个不为空的stack,就是different的
-    if (stackLeft.nonEmpty || stackRight.nonEmpty) {
-      true
-    } else {
-      false
-    }
+    if (stackLeft.nonEmpty || stackRight.nonEmpty) true else false
   }
 
   private def isDifferentInternal(left: Seq[Element], right: Seq[Element]): Boolean = {
-    true
-  }
-
-  private def isDifferentInternal(left: UnitElement[_], right: UnitElement[_]): Boolean = {
-    if (left.compareTo(right) == 0) {
-      false
-    } else {
-      true
+    for (elemLeft <- left; elemRight <- right) {
+      if (!innerDiffer.compare(elemLeft, elemRight)) {
+        true
+      }
     }
+    false
   }
 
 }
