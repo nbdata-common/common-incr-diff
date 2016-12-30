@@ -22,6 +22,10 @@ abstract class UnitDiffer(@NotNull private val decoratedDiffer: UnitDiffer) exte
   @throws(classOf[IllegalArgumentException])
   protected def compareUnitElement(element1: UnitElement[_], element2: UnitElement[_]): Boolean
 
+  /**
+    * 实现父类方法,用于比较两个UnitElement是否相同
+    * 当传入的两个Element有一个或以上不是UnitElement时返回false
+    */
   override protected def compareInternal(element1: Element, element2: Element): Boolean = {
     (element1, element2) match {
       case elements: (UnitElement[_], UnitElement[_]) => compareUnitElement(elements._1, elements._2)

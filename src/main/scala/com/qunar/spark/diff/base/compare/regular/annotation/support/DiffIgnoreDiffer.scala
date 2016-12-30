@@ -3,14 +3,14 @@ package com.qunar.spark.diff.base.compare.regular.annotation.support
 import javax.validation.constraints.NotNull
 
 import com.qunar.spark.diff.api.annotation.DiffIgnore
-import com.qunar.spark.diff.base.compare.regular.Differ
-import com.qunar.spark.diff.base.regular.elements.UnitElement
+import com.qunar.spark.diff.base.compare.regular.{AbstractDiffer, AnnotationAdvancedDiffer}
+import com.qunar.spark.diff.base.regular.elements.Element
 import com.qunar.spark.diff.ext.AnnotationAware
 
 /**
   * 针对[[com.qunar.spark.diff.api.annotation.DiffIgnore]]注解的拓展比较器
   */
-class DiffIgnoreDiffer(@NotNull private val decoratedDiffer: Differ) extends AnnotationAdvancedDiffer(decoratedDiffer) {
+class DiffIgnoreDiffer(@NotNull private val decoratedDiffer: AbstractDiffer) extends AnnotationAdvancedDiffer(decoratedDiffer) {
 
   /**
     * 对于[[com.qunar.spark.diff.api.annotation.DiffIgnore]]注解,
@@ -33,11 +33,10 @@ class DiffIgnoreDiffer(@NotNull private val decoratedDiffer: Differ) extends Ann
 
   /**
     * 对于[[com.qunar.spark.diff.api.annotation.DiffIgnore]]注解,
-    * 字段被忽略的意义就是两个字段的比较结果是相同,即这里应该无条件返回false
+    * 字段被忽略的意义就是两个字段的比较结果是相同,即这里应该无条件返回true
     */
-  override protected def isDifferentUnderAnnotation[T <: Comparable[T]](element1: UnitElement[T],
-                                                                        element2: UnitElement[T]): Boolean = {
-    false
+  override protected def isSameUnderAnnotation(element1: Element, element2: Element): Boolean = {
+    true
   }
 
 }

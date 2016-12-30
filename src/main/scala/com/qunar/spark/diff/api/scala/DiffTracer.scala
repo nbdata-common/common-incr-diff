@@ -40,7 +40,7 @@ object DiffTracer {
     *
     * @see [[com.fasterxml.jackson.databind.JsonNode]]
     */
-  def compare(target1: JsonNode, target2: JsonNode): Boolean = new JacksonDiffTracer[Boolean](Differ(), Sorter())
+  def isDifferent(target1: JsonNode, target2: JsonNode): Boolean = new JacksonDiffTracer[Boolean](Differ(), Sorter())
     .isDifferent(target1, target2)
 
 }
