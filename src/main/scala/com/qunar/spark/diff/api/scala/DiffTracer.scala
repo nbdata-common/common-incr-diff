@@ -8,15 +8,15 @@ import com.qunar.spark.diff.internal.impl.regular.jackson.JacksonDiffTracer
 import scala.reflect.ClassTag
 
 /**
-  * incr-diff的泛化抽象
+  * incr-diff的总的泛化抽象
   */
 trait DiffTracer[T] extends Serializable {
 
   /**
-    * 比较两个实体(target1,target2)是否是不同的
+    * 比较两个实体(targetLeft,targetRight)是否是不同的
     * 这里两个实体将被当作Plain Ordinary Java Object
     *
-    * NOTICE: 此方法开启了注解增强功能,可在T所对应的Class的字段上使用下面包内的注解:
+    * NOTICE: 此方法开启了注解增强功能,可在T所对应的Class的字段上使用以下包内的注解:
     *
     * @see [[com.qunar.spark.diff.api.annotation]]
     */
@@ -30,13 +30,13 @@ trait DiffTracer[T] extends Serializable {
 object DiffTracer {
 
   /**
-    * 默认的diff实现:JacksonDiffTracer
+    * 默认的[[DiffTracer]]实现:[[JacksonDiffTracer]]
     */
   def apply[T: ClassTag](): DiffTracer[T] = new JacksonDiffTracer[T]
 
   /**
-    * 当传入两个com.fasterxml.jackson.databind.JsonNode,
-    * 默认创建JacksonDiffTracer实例并调用其isDifferent方法
+    * 当传入两个[[com.fasterxml.jackson.databind.JsonNode]]时
+    * 默认创建[[JacksonDiffTracer]]实例并调用其[[isDifferent]]方法
     *
     * @see [[com.fasterxml.jackson.databind.JsonNode]]
     */

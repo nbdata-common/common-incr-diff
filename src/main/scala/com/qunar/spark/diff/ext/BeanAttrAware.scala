@@ -4,14 +4,14 @@ import java.lang.annotation.Annotation
 import java.lang.reflect.{Field, Method}
 
 /**
-  * 实现此trait后,(Element)对自己的宿主类,自己所直接映射的类及类相关属性能够有所感知
+  * 实现此trait后,([[com.qunar.spark.diff.base.regular.elements.Element]])对自己的宿主类,自己所直接映射的类及类相关属性能够有所感知
   * 一般认为,所映射的类是Plain Ordinary Java Object
   * 感知的内容包括:
-  * 1. 自己的宿主类
-  * 2. 自己所映射的类
-  * 3. 自己所映射的类中的所有方法
-  * 4. 自己在宿主类里所映射的Field
-  * 5. 自己在宿主类里所拥有的所有Annotations
+  * 1. 自己的宿主[[Class]]
+  * 2. 自己所映射的[[Class]]
+  * 3. 自己所映射的类中的所有[[Method]]
+  * 4. 自己在宿主类里所映射的[[Field]]
+  * 5. 自己在宿主类里所拥有的所有[[Annotation]]
   */
 trait BeanAttrAware {
 
@@ -39,9 +39,9 @@ trait BeanAttrAware {
   def mappedField: Option[Field]
 
   /**
-    * 感知自己在宿主类里所拥有的所有Annotations
+    * 感知自己在宿主类里所拥有的所有[[Annotation]]
     *
-    * NOTICE: 如果mappedField方法返回的Optional[Field]是Absent类型,则此方法默认返回空序列
+    * NOTICE: 如果[[mappedField]]方法返回的[[Option]]是[[None]]类型,则此方法默认返回空序列
     */
   def allAnnotations: Seq[Annotation] = mappedField.getOrElse(emptyAnnotationField).getDeclaredAnnotations
 

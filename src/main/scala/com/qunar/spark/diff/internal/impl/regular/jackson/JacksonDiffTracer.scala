@@ -37,7 +37,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
   /* main api */
 
   /**
-    * 重写DiffTracer中的public方法
+    * 实现[[com.qunar.spark.diff.api.scala.DiffTracer]]中的public方法
     */
   override def isDifferent(targetLeft: T, targetRight: T): Boolean = {
     val nodeLeft = beanToJsonNode(targetLeft)
@@ -104,8 +104,6 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
           // entries的类型:(String, JsonNode)
           val entries = JacksonElementDriver.childrenNodesWithName(pointer._1)
           childrenElements.reset()
-          // todo 预扩容
-          // preProbableExpansion(childrenElements, entries.iterator)
           // 提取element
           for (entry <- entries) {
             val element = wrapElement(JacksonElementDriver.makeElement(entry._2, entry._1))
@@ -121,17 +119,6 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
 
     // 返回目标
     result
-  }
-
-  /**
-    * 预先处理可能的扩容,确保一次到位,避免重复GC
-    */
-  private def preProbableExpansion(childrenElements: ReAssignableArrayBuffer[Element], expectData: Iterator[_]) = {
-    var childrenNum = 0
-    while (expectData.hasNext) {
-      childrenNum += 1
-    }
-    childrenElements.preProbableExpansion(childrenNum)
   }
 
 

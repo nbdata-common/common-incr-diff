@@ -33,7 +33,7 @@ object UnitElement {
     * @return UnitElement的枚举类型[[UnitElementType]]
     */
   def actualType(element: UnitElement[_]): UnitElementType = {
-    Preconditions.checkArgument(element != null)
+    Preconditions.checkNotNull[Element](element)
     element match {
       case element: NumericElement => UnitElementType.NUMERIC_ELEMENT
       case element: TextElement => UnitElementType.TEXT_ELEMENT

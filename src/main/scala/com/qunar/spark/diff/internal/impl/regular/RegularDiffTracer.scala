@@ -52,7 +52,7 @@ abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
           } else {
             true
           }
-        // todo 如果是两个UnitElement,因为在
+        // 如果是两个UnitElement,因为在
         case pointers: (UnitElement[_], UnitElement[_]) =>
         case _ => true
       }

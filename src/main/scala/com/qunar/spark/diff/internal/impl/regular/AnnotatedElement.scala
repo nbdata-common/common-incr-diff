@@ -19,7 +19,7 @@ class AnnotatedElement private(private var decoratedElement: Element,
                                private val field: Field) extends ExtElement(decoratedElement)
   with AnnotationAware {
 
-  def resetDecoratedElement(newElement: Element): Unit = {
+  def setDecoratedElement(newElement: Element): Unit = {
     this.decoratedElement = newElement
   }
 

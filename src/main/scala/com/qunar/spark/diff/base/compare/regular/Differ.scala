@@ -7,8 +7,8 @@ import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element, Un
 /**
   * 递归结构中的diff比较器(总控)
   *
-  * @param unitDiffer      用于UnitElement的比较器
-  * @param compositeDiffer 用于CompositeElement的比较器
+  * @param unitDiffer      用于[[UnitElement]]的比较器
+  * @param compositeDiffer 用于[[CompositeElement]]的比较器
   */
 private[diff] final class Differ(private val unitDiffer: UnitDiffer,
                                  private val compositeDiffer: CompositeDiffer) {
@@ -26,17 +26,17 @@ private[diff] final class Differ(private val unitDiffer: UnitDiffer,
 
 private[diff] object Differ {
 
-  def apply(): Differ = new Differ(DifferFactory.genUnitDiffer, DifferFactory.genCompositeDiffer)
+  def apply(): Differ = new Differ(DifferFactory.genDefaultUnitDiffer, DifferFactory.genDefaultCompositeDiffer)
 
 }
 
 private[compare] object DifferFactory {
 
-  def genUnitDiffer: UnitDiffer = {
+  def genDefaultUnitDiffer: UnitDiffer = {
     null
   }
 
-  def genCompositeDiffer: CompositeDiffer = {
+  def genDefaultCompositeDiffer: CompositeDiffer = {
     null
   }
 

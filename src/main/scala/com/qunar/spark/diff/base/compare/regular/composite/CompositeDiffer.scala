@@ -6,14 +6,21 @@ import com.qunar.spark.diff.base.compare.regular.AbstractDiffer
 import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element}
 
 /**
-  * 递归结构中,针对CompositeElement的diff比较器的行为抽象
-  *
-  * @param decoratedDiffer 被装饰的前置比较器,不允许为null,否则构造失败,异常抛出
+  * 递归结构中,针对[[CompositeElement]]的diff比较器的行为抽象
   */
 abstract class CompositeDiffer(@NotNull private val decoratedDiffer: CompositeDiffer) extends AbstractDiffer(decoratedDiffer) {
 
+  private[composite] def this() = this(AbstractDiffer.defaultEmptyDiffer)
+
+  /**
+    * 用于比较两个[[CompositeElement]]是否相同
+    */
   protected def compareCompositeElement(element1: CompositeElement, element2: CompositeElement): Boolean
 
+  /**
+    * 实现父类方法,用于比较两个[[CompositeElement]]是否相同
+    * 当传入的两个[[Element]]有一个或以上不是[[CompositeElement]]时返回false
+    */
   override protected def compareInternal(element1: Element, element2: Element): Boolean = {
     (element1, element2) match {
       case elements: (CompositeElement, CompositeElement) => compareCompositeElement(elements._1, elements._2)
