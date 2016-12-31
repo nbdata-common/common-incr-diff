@@ -8,7 +8,7 @@ import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element}
 /**
   * 递归结构中,针对[[CompositeElement]]的diff比较器的行为抽象
   */
-abstract class CompositeDiffer(@NotNull private val decoratedDiffer: CompositeDiffer) extends AbstractDiffer(decoratedDiffer) {
+abstract class CompositeDiffer(@NotNull private val decoratedDiffer: AbstractDiffer) extends AbstractDiffer(decoratedDiffer) {
 
   private[composite] def this() = this(AbstractDiffer.defaultEmptyDiffer)
 

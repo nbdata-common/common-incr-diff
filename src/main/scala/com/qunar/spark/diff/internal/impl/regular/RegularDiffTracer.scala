@@ -62,6 +62,9 @@ abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
     if (stackLeft.nonEmpty || stackRight.nonEmpty) true else false
   }
 
+  /**
+    * 对两个[[Element]]序列从前到后依次判断对应元素是否相同
+    */
   private def isDifferentInternal(left: Seq[Element], right: Seq[Element]): Boolean = {
     for (elemLeft <- left; elemRight <- right) {
       if (!innerDiffer.compare(elemLeft, elemRight)) {

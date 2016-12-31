@@ -8,7 +8,7 @@ import com.qunar.spark.diff.base.regular.elements.{Element, UnitElement}
 /**
   * 递归结构中,针对[[UnitElement]]的diff比较器的行为抽象
   */
-abstract class UnitDiffer(@NotNull private val decoratedDiffer: UnitDiffer) extends AbstractDiffer(decoratedDiffer) {
+abstract class UnitDiffer(@NotNull private val decoratedDiffer: AbstractDiffer) extends AbstractDiffer(decoratedDiffer) {
 
   private[unit] def this() = this(AbstractDiffer.defaultEmptyDiffer)
 

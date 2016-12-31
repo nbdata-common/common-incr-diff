@@ -24,9 +24,7 @@ public final class JavaDiffTracer<T> {
         this.innerDiffTracer = diffTracer;
     }
 
-    /**
-     * 默认的DiffTracer实现:JacksonDiffTracer
-     */
+
     public static <T> JavaDiffTracer<T> of() {
         DiffTracer<T> defaultDiffTracer = ScalaConverterDriver.defaultDiffTracer();
         return new JavaDiffTracer<>(defaultDiffTracer);
@@ -54,7 +52,8 @@ public final class JavaDiffTracer<T> {
      * @see com.fasterxml.jackson.databind.JsonNode
      */
     public static boolean isDifferent(JsonNode targetLeft, JsonNode targetRight) {
-        return false;
+        JacksonDiffTracer<Boolean> diffTracer = (JacksonDiffTracer<Boolean>) ScalaConverterDriver.<Boolean>defaultDiffTracer();
+        return diffTracer.isDifferent(targetLeft, targetRight);
     }
 
     /**
@@ -62,15 +61,28 @@ public final class JavaDiffTracer<T> {
      */
     private static final class ScalaConverterDriver {
 
+        /**
+         * 默认的{@link DiffTracer}实现:{@link JacksonDiffTracer}
+         */
         private static <T> DiffTracer<T> defaultDiffTracer() {
-            ClassTag<T> tag = scala.reflect.ClassTag$.MODULE$.apply(getClassOfT());
+            ClassTag<T> tag = getClassTagOfT();
             return DiffTracer$.MODULE$.apply(tag);
         }
 
+        /**
+         * 使用Jackson的{@link TypeReference}获得泛型T所对应的实际类型
+         */
         @SuppressWarnings("unchecked")
         private static <T> Class<T> getClassOfT() {
             return (Class<T>) new TypeReference<T>() {
             }.getType();
+        }
+
+        /**
+         * 由{@link Class<T>}转换为{@link ClassTag<T>}
+         */
+        private static <T> ClassTag<T> getClassTagOfT() {
+            return scala.reflect.ClassTag$.MODULE$.apply(getClassOfT());
         }
 
     }

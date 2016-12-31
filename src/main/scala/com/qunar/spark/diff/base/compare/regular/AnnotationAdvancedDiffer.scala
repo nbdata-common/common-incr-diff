@@ -60,7 +60,7 @@ abstract class AnnotationAdvancedDiffer(@NotNull private val decoratedDiffer: Ab
     * 所以,当传入一个非[[AnnotationAware]]时这里返回false以消除'''"side-effect"''',使我们可以放心地在比较器链中添加
     * [[AnnotationAdvancedDiffer]].
     *
-    * 此方法不允许被重写,子类的[[compareInternal]]都必须遵从此方法的逻辑:
+    * 为保证逻辑被正确执行到位,此方法不允许被重写,子类的[[compareInternal]]都必须遵从此方法的逻辑:
     * 1. 判断方法传入的元素是否有注解感知能力 &&
     * 2. 判断当前注解是否对方法传入的元素生效 &&
     * 3. 判断在注解规则下两个对象是否不同
