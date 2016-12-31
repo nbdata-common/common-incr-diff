@@ -6,8 +6,9 @@ import com.google.common.base.Preconditions
 import com.qunar.spark.diff.base.regular.elements.Element
 
 /**
-  * 总的抽象的diff行为
-  * (囊括[[com.qunar.spark.diff.base.regular.elements.UnitElement]]与[[com.qunar.spark.diff.base.regular.elements.CompositeElement]])
+  * 总体抽象的diff行为(包括[[com.qunar.spark.diff.base.regular.elements.UnitElement]]
+  * 与[[com.qunar.spark.diff.base.regular.elements.CompositeElement]])
+  * 并规范装饰器链从前向后的作用关系
   *
   * @param decoratedDiffer 被装饰的前置比较器,不允许为null,否则构造失败,异常抛出
   */
@@ -16,7 +17,7 @@ abstract class AbstractDiffer(@NotNull private val decoratedDiffer: AbstractDiff
   Preconditions.checkNotNull(decoratedDiffer)
 
   /**
-    * [[com.qunar.spark.diff.base.compare.regular]]包内私有的默认构造器
+    * [[com.qunar.spark.diff.base.compare.regular]]包内私有的默认构造器,不对包外开放
     * 用于终结比较器构造链
     */
   private[regular] def this() = this(AbstractDiffer.defaultEmptyDiffer)

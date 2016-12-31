@@ -13,12 +13,16 @@ import scala.reflect.ClassTag
 trait DiffTracer[T] extends Serializable {
 
   /**
-    * 比较两个实体(targetLeft,targetRight)是否是不同的
+    * 比较两个实体 targetLeft 与 targetRight 是否是不同的
     * 这里两个实体将被当作Plain Ordinary Java Object
     *
-    * NOTICE: 此方法开启了注解增强功能,可在T所对应的Class的字段上使用以下包内的注解:
+    * NOTICE: 此方法开启了注解增强功能,可在[[T]]所对应Class的字段上使用以下包内的注解:
     *
     * @see [[com.qunar.spark.diff.api.annotation]]
+    *      <p/>
+    * @param targetLeft  第一个待比较对象
+    * @param targetRight 第二个待比较对象
+    * @return targetLeft 与 targetRight 是否是相同的
     */
   def isDifferent(targetLeft: T, targetRight: T): Boolean
 
@@ -36,7 +40,7 @@ object DiffTracer {
 
   /**
     * 当传入两个[[com.fasterxml.jackson.databind.JsonNode]]时
-    * 默认创建[[JacksonDiffTracer]]实例并调用其[[isDifferent]]方法
+    * 默认创建[[JacksonDiffTracer]]实例并调用其[[JacksonDiffTracer.isDifferent]]方法
     *
     * @see [[com.fasterxml.jackson.databind.JsonNode]]
     */

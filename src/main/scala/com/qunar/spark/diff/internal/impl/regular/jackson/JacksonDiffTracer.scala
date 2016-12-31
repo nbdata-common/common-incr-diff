@@ -13,7 +13,7 @@ import scala.collection.mutable
 import scala.reflect.ClassTag
 
 /**
-  * 适用于Jackson的incr-diff实现类
+  * 适用于Jackson的DiffTracer实现类
   */
 private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val sorter: Sorter) extends RegularDiffTracer[T] {
 
@@ -82,17 +82,17 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
     * 某个JsonNode所对应的Element
     */
   private def jsonNodeToElement(node: JsonNode, wrapElement: (Element) => Element): Element = {
+    /* 初始化 */
     // 最终要返回的目标Element
     val result: Element = wrapElement(JacksonElementDriver.makeElement(node))
     // 初始化
     val stack: mutable.Stack[(JsonNode, Element)] = mutable.Stack((node, result))
-
-    /* 以下为显式堆栈处理过程 */
-
     // 当前处理的指针,指向处理的对象
     var pointer = stack.top
     // 孩子Elements列表(初始化size = 32)
     val childrenElements = ReAssignableArrayBuffer[Element](32)
+
+    /* 以下为显式堆栈处理过程 */
 
     while (stack.nonEmpty) {
       pointer = stack.top

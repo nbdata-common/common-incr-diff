@@ -28,7 +28,7 @@ abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
     * 即可间接实现diff功能.
     */
   protected final def isDifferent(targetLeft: Element, targetRight: Element): Boolean = {
-    // 初始化
+    /* 初始化 */
     val stackLeft: mutable.Stack[Element] = mutable.Stack(targetLeft)
     val stackRight: mutable.Stack[Element] = mutable.Stack(targetRight)
     // 当前处理的指针,指向处理的对象
@@ -52,7 +52,7 @@ abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
           } else {
             true
           }
-        // 如果是两个UnitElement,因为在
+        // 如果是两个UnitElement作空处理,因为在上一个case中已经比较过,所以能走到这里肯定是相同的
         case pointers: (UnitElement[_], UnitElement[_]) =>
         case _ => true
       }

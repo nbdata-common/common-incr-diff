@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.qunar.spark.diff.api.scala.DiffTracer;
 import com.qunar.spark.diff.api.scala.DiffTracer$;
+import com.qunar.spark.diff.internal.impl.regular.jackson.JacksonDiffTracer;
 import scala.reflect.ClassTag;
 
 /**
@@ -11,6 +12,9 @@ import scala.reflect.ClassTag;
  */
 public final class JavaDiffTracer<T> {
 
+    /**
+     * 内部维护一个DiffTracer实例
+     */
     private DiffTracer<T> innerDiffTracer;
 
     /**
@@ -18,10 +22,6 @@ public final class JavaDiffTracer<T> {
      */
     private JavaDiffTracer(DiffTracer<T> diffTracer) {
         this.innerDiffTracer = diffTracer;
-    }
-
-    public boolean isDifferent(T target1, T target2) {
-        return innerDiffTracer.isDifferent(target1, target2);
     }
 
     /**
@@ -33,17 +33,32 @@ public final class JavaDiffTracer<T> {
     }
 
     /**
-     * 当传入两个com.fasterxml.jackson.databind.JsonNode,
-     * 默认创建JacksonDiffTracer实例并调用其isDifferent方法
+     * 比较两个实体 targetLeft 与 targetRight 是否是不同的
+     * 这里两个实体将被当作Plain Ordinary Java Object
+     *
+     * @param targetLeft  第一个待比较对象
+     * @param targetRight 第二个待比较对象
+     * @return targetLeft 与 targetRight 是否是相同的
+     * <p>
+     * NOTICE: 此方法开启了注解增强功能,可在T所对应Class的字段上使用以下包内的注解:
+     * @see com.qunar.spark.diff.api.annotation
+     */
+    public boolean isDifferent(T targetLeft, T targetRight) {
+        return innerDiffTracer.isDifferent(targetLeft, targetRight);
+    }
+
+    /**
+     * 当传入两个{@link com.fasterxml.jackson.databind.JsonNode}时,
+     * 默认创建{@link JacksonDiffTracer}实例并调用其{@link JacksonDiffTracer#isDifferent}方法
      *
      * @see com.fasterxml.jackson.databind.JsonNode
      */
-    public static boolean compare(JsonNode target1, JsonNode target2) {
+    public static boolean isDifferent(JsonNode targetLeft, JsonNode targetRight) {
         return false;
     }
 
     /**
-     * scala-java转换的驱动封装,隐藏复杂的api调用
+     * scala-java转换的驱动封装,隐藏复杂的scala api调用
      */
     private static final class ScalaConverterDriver {
 
