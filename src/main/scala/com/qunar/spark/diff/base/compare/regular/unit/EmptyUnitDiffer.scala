@@ -5,7 +5,7 @@ import com.qunar.spark.diff.base.regular.elements.UnitElementType.UnitElementTyp
 
 /**
   * 针对[[UnitElement]]的空比较器
-  * 如果说使用装饰器模式串起来的比较器链是一个链表,那么空比较器就是链表最末端的null指针
+
   *
   * NOTICE: 此类不允许被继承
   */
@@ -18,7 +18,7 @@ final class EmptyUnitDiffer extends UnitDiffer {
   /**
     * 检查传入的两个参数是否拥有一致的实际类型
     * 如果不一致,则抛出[[IllegalArgumentException]]
-    * 否则返回false,以确保比较器链正常向下游执行
+    * 否则返回false,以确保比较器链正常向下游传递
     */
   private def checkTypeConsistent(element1: UnitElement[_], element2: UnitElement[_]): Boolean = {
     val elemType1: UnitElementType = UnitElement.actualType(element1)

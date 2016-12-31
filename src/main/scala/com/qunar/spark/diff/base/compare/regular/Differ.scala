@@ -1,5 +1,7 @@
 package com.qunar.spark.diff.base.compare.regular
 
+import com.qunar.spark.diff.api._
+import com.qunar.spark.diff.api.enums.DifferType
 import com.qunar.spark.diff.base.compare.regular.composite.CompositeDiffer
 import com.qunar.spark.diff.base.compare.regular.unit.UnitDiffer
 import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element, UnitElement}
@@ -16,7 +18,7 @@ private[diff] final class Differ(private val unitDiffer: UnitDiffer,
   /**
     * 针对传入的两个[[Element]],作模式匹配分别路由到[[UnitDiffer]]或[[CompositeDiffer]]
     *
-    * @throws java.lang.IllegalArgumentException 详见[[com.qunar.spark.diff.base.compare.regular.unit.UnitDiffer]]
+    * @throws IllegalArgumentException 详见[[com.qunar.spark.diff.base.compare.regular.unit.UnitDiffer]]
     */
   @throws(classOf[IllegalArgumentException])
   def compare[T](element1: Element, element2: Element): Boolean = {
@@ -32,9 +34,16 @@ private[diff] final class Differ(private val unitDiffer: UnitDiffer,
 private[diff] object Differ {
 
   /**
-    * 默认的differ构造
+    * 构造一个默认的Differ
     */
   def apply(): Differ = new Differ(DifferFactory.genDefaultUnitDiffer, DifferFactory.genDefaultCompositeDiffer)
+
+  /**
+    * 构造一个定制化的Differ
+    */
+  def apply(unitDifferTypes: Seq[UnitDifferType], compositeDifferTypes: Seq[CompositeDifferType]): Differ = {
+    new Differ(DifferFactory.genUnitDiffer(unitDifferTypes), DifferFactory.genCompositeDiffer(compositeDifferTypes))
+  }
 
 }
 
@@ -43,12 +52,20 @@ private[diff] object Differ {
   */
 private[compare] object DifferFactory {
 
-  def genDefaultUnitDiffer: UnitDiffer = {
+  def genUnitDiffer(unitDifferTypes: Seq[UnitDifferType]): UnitDiffer = {
     null
   }
 
-  def genDefaultCompositeDiffer: CompositeDiffer = {
+  def genCompositeDiffer(compositeDifferTypes: Seq[CompositeDifferType]): CompositeDiffer = {
     null
+  }
+
+  def genDefaultUnitDiffer: UnitDiffer = {
+    genUnitDiffer(null)
+  }
+
+  def genDefaultCompositeDiffer: CompositeDiffer = {
+    genCompositeDiffer(null)
   }
 
 }

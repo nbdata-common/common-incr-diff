@@ -19,7 +19,7 @@ abstract class UnitDiffer(@NotNull private val decoratedDiffer: AbstractDiffer) 
     * [[com.qunar.spark.diff.base.regular.elements.TextElement]]
     * [[com.qunar.spark.diff.base.regular.elements.BooleanElement]]
     *
-    * @throws java.lang.IllegalArgumentException 当传入的两个[[UnitElement]]的实际类型不同时抛出此异常
+    * @throws IllegalArgumentException 当传入的两个[[UnitElement]]的实际类型不同时抛出此异常
     */
   @throws(classOf[IllegalArgumentException])
   protected def compareUnitElement(element1: UnitElement[_], element2: UnitElement[_]): Boolean

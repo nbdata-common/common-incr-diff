@@ -8,7 +8,7 @@ import com.qunar.spark.diff.base.regular.elements.Element
 /**
   * 总体抽象的diff行为(包括[[com.qunar.spark.diff.base.regular.elements.UnitElement]]
   * 与[[com.qunar.spark.diff.base.regular.elements.CompositeElement]])
-  * 并规范装饰器链从前向后的作用关系
+  * 并规范装饰器链从前向后的传递及作用关系
   *
   * @param decoratedDiffer 被装饰的前置比较器,不允许为null,否则构造失败,异常抛出
   */
@@ -19,6 +19,11 @@ abstract class AbstractDiffer(@NotNull private val decoratedDiffer: AbstractDiff
   /**
     * [[com.qunar.spark.diff.base.compare.regular]]包内私有的默认构造器,不对包外开放
     * 用于终结比较器构造链
+    * <p/>
+    * NOTICE: [[AbstractDiffer.defaultEmptyDiffer]]在比较器执行链中处于头节点的位置,
+    * 但是在构造比较器链的过程中却处于构造链的最末端,这是因为我们将[[compare]]过程设计
+    * 为先执行[[decoratedDiffer]]的方法,再执行自己的方法.所以,在构造链的最末端反而是第
+    * 一个被执行的.
     */
   private[regular] def this() = this(AbstractDiffer.defaultEmptyDiffer)
 
@@ -49,6 +54,7 @@ object AbstractDiffer {
 
   /**
     * 默认空比较器,主要用于静态object,避免频繁实例化
+    * 如果说使用装饰器模式串起来的比较器链是一个链表,那么空比较器就是链表表头的头节点
     */
   class DefaultEmptyDiffer extends AbstractDiffer(new DefaultEmptyDiffer) {
 

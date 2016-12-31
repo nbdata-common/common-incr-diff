@@ -38,6 +38,7 @@ class ScalaTest {
   }
 
   def isDifferent[T <: Comparable[T]](a: UnitElement[T], b: UnitElement[T]): Boolean = {
+    DiffTracer.builder().unitDifferTypes()
     false
   }
 

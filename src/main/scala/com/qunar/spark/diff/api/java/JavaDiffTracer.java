@@ -2,8 +2,7 @@ package com.qunar.spark.diff.api.java;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.qunar.spark.diff.api.scala.DiffTracer;
-import com.qunar.spark.diff.api.scala.DiffTracer$;
+import com.qunar.spark.diff.api.scala.*;
 import com.qunar.spark.diff.internal.impl.regular.jackson.JacksonDiffTracer;
 import scala.reflect.ClassTag;
 
