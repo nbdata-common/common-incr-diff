@@ -76,7 +76,11 @@ object DiffTracer {
     compositeDifferTypes.sizeHint(3)
 
     /**
-      * 以可变参数列表的形式指定加入[[com.qunar.spark.diff.base.compare.regular.unit.UnitDiffer]]比较器链的比较器种类
+      * 以可变参数列表的形式指定加入[[com.qunar.spark.diff.base.compare.regular.unit.UnitDiffer]]比较器链
+      * 的比较器种类.
+      * <p/>
+      * NOTICE: [[UnitDifferType*]]类型的可变参数将被转换为一个[[Seq]],送往比较器链构造工厂后将按照序列中给出
+      * 的类型顺序构造比较器链,[[compositeDifferTypes]]方法同理.
       */
     def unitDifferTypes(differTypes: UnitDifferType*): this.type = {
       for (differType <- differTypes) {
@@ -86,7 +90,8 @@ object DiffTracer {
     }
 
     /**
-      * 以可变参数列表的形式指定加入[[com.qunar.spark.diff.base.compare.regular.composite.CompositeDiffer]]比较器链的比较器种类
+      * 以可变参数列表的形式指定加入[[com.qunar.spark.diff.base.compare.regular.composite.CompositeDiffer]]
+      * 比较器链的比较器种类.
       */
     def compositeDifferTypes(differTypes: CompositeDifferType*): this.type = {
       for (differType <- differTypes) {
@@ -128,7 +133,7 @@ object DiffTracer {
       .compositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
       .build
 
-    diffTracer.asInstanceOf[JacksonDiffTracer].isDifferent(targetLeft, targetRight)
+    diffTracer.asInstanceOf[JacksonDiffTracer[Boolean]].isDifferent(targetLeft, targetRight)
   }
 
 }

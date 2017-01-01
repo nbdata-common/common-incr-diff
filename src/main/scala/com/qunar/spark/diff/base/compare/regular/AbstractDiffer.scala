@@ -8,8 +8,7 @@ import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
 import com.qunar.spark.diff.base.regular.elements.unit.UnitElement
 
 /**
-  * 总体抽象的diff行为(包括[[UnitElement]]
-  * 与[[CompositeElement]])
+  * 总体抽象的diff行为(包括[[UnitElement]]与[[CompositeElement]])
   * 并规范装饰器链从前向后的传递及作用关系
   *
   * @param decoratedDiffer 被装饰的前置比较器,不允许为null,否则构造失败,异常抛出
