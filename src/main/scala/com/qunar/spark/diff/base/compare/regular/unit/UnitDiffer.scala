@@ -3,7 +3,8 @@ package com.qunar.spark.diff.base.compare.regular.unit
 import javax.validation.constraints.NotNull
 
 import com.qunar.spark.diff.base.compare.regular.AbstractDiffer
-import com.qunar.spark.diff.base.regular.elements.{Element, UnitElement}
+import com.qunar.spark.diff.base.regular.elements.unit.{BooleanElement, NumericElement, TextElement, UnitElement}
+import com.qunar.spark.diff.base.regular.elements.Element
 
 /**
   * 递归结构中,针对[[UnitElement]]的diff比较器的行为抽象
@@ -15,9 +16,9 @@ abstract class UnitDiffer(@NotNull private val decoratedDiffer: AbstractDiffer) 
   /**
     * 用于比较两个[[UnitElement]]是否相同
     * 适用于此方法的类型包括:
-    * [[com.qunar.spark.diff.base.regular.elements.NumericElement]]
-    * [[com.qunar.spark.diff.base.regular.elements.TextElement]]
-    * [[com.qunar.spark.diff.base.regular.elements.BooleanElement]]
+    * [[NumericElement]]
+    * [[TextElement]]
+    * [[BooleanElement]]
     *
     * @throws IllegalArgumentException 当传入的两个[[UnitElement]]的实际类型不同时抛出此异常
     */

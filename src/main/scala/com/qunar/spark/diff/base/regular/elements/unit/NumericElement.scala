@@ -1,4 +1,4 @@
-package com.qunar.spark.diff.base.regular.elements
+package com.qunar.spark.diff.base.regular.elements.unit
 
 import com.qunar.spark.diff.base.GenericNumber
 

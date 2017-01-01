@@ -1,6 +1,6 @@
 package com.qunar.spark.diff.base.regular.elements.ext.api
 
-import com.qunar.spark.diff.base.regular.elements.UnitElement
+import com.qunar.spark.diff.base.regular.elements.unit.UnitElement
 
 /**
   * UnitElement的拓展接口

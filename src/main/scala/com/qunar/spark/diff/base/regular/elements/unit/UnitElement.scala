@@ -1,7 +1,8 @@
-package com.qunar.spark.diff.base.regular.elements
+package com.qunar.spark.diff.base.regular.elements.unit
 
 import com.google.common.base.Preconditions
-import com.qunar.spark.diff.base.regular.elements.UnitElementType.UnitElementType
+import com.qunar.spark.diff.base.regular.elements.Element
+import com.qunar.spark.diff.base.regular.elements.unit.UnitElementType.UnitElementType
 
 /**
   * 在规则(递归)结构中,表征一个原子元素(即单元节点,不可继续拆分)

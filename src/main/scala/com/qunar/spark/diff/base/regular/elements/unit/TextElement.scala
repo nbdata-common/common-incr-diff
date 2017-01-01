@@ -1,4 +1,4 @@
-package com.qunar.spark.diff.base.regular.elements
+package com.qunar.spark.diff.base.regular.elements.unit
 
 /**
   * 文本类型的原子元素:其唯一映射到一个String类型的值

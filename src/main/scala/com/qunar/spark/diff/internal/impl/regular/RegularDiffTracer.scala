@@ -2,7 +2,9 @@ package com.qunar.spark.diff.internal.impl.regular
 
 import com.qunar.spark.diff.api.scala.DiffTracer
 import com.qunar.spark.diff.base.compare.regular.Differ
-import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element, UnitElement}
+import com.qunar.spark.diff.base.regular.elements.unit.UnitElement
+import com.qunar.spark.diff.base.regular.elements.Element
+import com.qunar.spark.diff.base.regular.elements.composite.{ArrayElement, CompositeElement}
 import com.qunar.spark.diff.base.sort.Sorter
 
 import scala.collection.mutable
@@ -27,7 +29,7 @@ abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
     * 所有递归结构的DiffTracer的继承者们只需要实现从泛型入参[[T]]到[[Element]]及其子类的转换
     * 即可间接实现diff功能.
     */
-  protected final def isDifferent(targetLeft: Element, targetRight: Element): Boolean = {
+  protected final def isElementDifferent(targetLeft: Element, targetRight: Element): Boolean = {
     /* 初始化 */
     val stackLeft: mutable.Stack[Element] = mutable.Stack(targetLeft)
     val stackRight: mutable.Stack[Element] = mutable.Stack(targetRight)
@@ -43,6 +45,10 @@ abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
       stackLeft.pop
       stackRight.pop
       (pointerLeft, pointerRight) match {
+        // 对ArrayElement作单独处理
+        case pointers: (ArrayElement, ArrayElement) => //todo
+
+        // 对其他CompositeElement的通用处理
         case pointers: (CompositeElement, CompositeElement) =>
           val leftSorted = innerSorter.sort(pointers._1.childrenElements())
           val rightSorted = innerSorter.sort(pointers._2.childrenElements())
@@ -52,8 +58,11 @@ abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
           } else {
             true
           }
+
         // 如果是两个UnitElement作空处理,因为在上一个case中已经比较过,所以能走到这里肯定是相同的
         case pointers: (UnitElement[_], UnitElement[_]) =>
+
+        // 匹配至其他情况,肯定是不同的,一律返回true
         case _ => true
       }
     }

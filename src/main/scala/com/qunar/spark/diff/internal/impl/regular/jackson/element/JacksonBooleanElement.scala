@@ -2,7 +2,7 @@ package com.qunar.spark.diff.internal.impl.regular.jackson.element
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.BooleanNode
-import com.qunar.spark.diff.base.regular.elements.BooleanElement
+import com.qunar.spark.diff.base.regular.elements.unit.BooleanElement
 
 /**
   * 适用于Jackson的BooleanElement

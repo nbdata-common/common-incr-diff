@@ -1,6 +1,7 @@
 package com.qunar.spark.diff.internal.impl.regular.jackson.element
 
-import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element}
+import com.qunar.spark.diff.base.regular.elements.Element
+import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
 
 /**
   * 适用于Jackson的CompositeElement

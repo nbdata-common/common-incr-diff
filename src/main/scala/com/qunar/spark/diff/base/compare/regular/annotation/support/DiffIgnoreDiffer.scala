@@ -24,9 +24,7 @@ class DiffIgnoreDiffer(@NotNull private val decoratedDiffer: AbstractDiffer) ext
   override protected def isElementHasAnnotation(element: AnnotationAware): Boolean = {
     val annotations = element.allAnnotations
     for (annotation <- annotations) {
-      if (annotation.isInstanceOf[DiffIgnore]) {
-        true
-      }
+      if (annotation.isInstanceOf[DiffIgnore]) true
     }
     false
   }

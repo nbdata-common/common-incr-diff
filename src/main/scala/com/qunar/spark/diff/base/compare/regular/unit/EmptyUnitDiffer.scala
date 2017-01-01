@@ -1,11 +1,13 @@
 package com.qunar.spark.diff.base.compare.regular.unit
 
-import com.qunar.spark.diff.base.regular.elements.UnitElement
-import com.qunar.spark.diff.base.regular.elements.UnitElementType.UnitElementType
+import com.qunar.spark.diff.base.regular.elements.unit.UnitElementType.UnitElementType
+import com.qunar.spark.diff.base.regular.elements.unit.UnitElement
 
 /**
   * 针对[[UnitElement]]的空比较器
-
+  * 这里需要重新定义一个类似于[[com.qunar.spark.diff.base.compare.regular.AbstractDiffer.defaultEmptyDiffer]]
+  * 的空比较器的原因在于我们需要在链表的头节点处校验传入的参数的类型是否一致,而它的decoratedDiffer正是
+  * [[com.qunar.spark.diff.base.compare.regular.AbstractDiffer.defaultEmptyDiffer]]
   *
   * NOTICE: 此类不允许被继承
   */

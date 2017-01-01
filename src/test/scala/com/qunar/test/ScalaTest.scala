@@ -3,8 +3,11 @@ package com.qunar.test
 import java.lang.reflect.{Field, Method}
 
 import com.google.common.base.Optional
+import com.qunar.spark.diff.api.enums.DifferType
 import com.qunar.spark.diff.api.scala.DiffTracer
-import com.qunar.spark.diff.base.regular.elements.{BooleanElement, CompositeElement, Element, UnitElement}
+import com.qunar.spark.diff.base.regular.elements.unit.{BooleanElement, UnitElement}
+import com.qunar.spark.diff.base.regular.elements.Element
+import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
 import com.qunar.spark.diff.ext.BeanAttrAware
 
 class ScalaTest {
@@ -38,7 +41,10 @@ class ScalaTest {
   }
 
   def isDifferent[T <: Comparable[T]](a: UnitElement[T], b: UnitElement[T]): Boolean = {
-    DiffTracer.builder().unitDifferTypes()
+    val diffTracer = DiffTracer.builder()
+      .unitDifferTypes(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DEFAULT)
+      .compositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
+      .build
     false
   }
 

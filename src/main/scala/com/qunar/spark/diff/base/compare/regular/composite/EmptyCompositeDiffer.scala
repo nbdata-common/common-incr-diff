@@ -1,6 +1,6 @@
 package com.qunar.spark.diff.base.compare.regular.composite
 
-import com.qunar.spark.diff.base.regular.elements.CompositeElement
+import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
 
 /**
   * 针对[[CompositeElement]]的空比较器

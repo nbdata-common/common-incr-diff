@@ -1,6 +1,7 @@
 package com.qunar.spark.diff.base.regular.elements.ext.api
 
-import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element}
+import com.qunar.spark.diff.base.regular.elements.Element
+import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
 
 /**
   * CompositeElement的拓展接口

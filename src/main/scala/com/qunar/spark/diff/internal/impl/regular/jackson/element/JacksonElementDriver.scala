@@ -3,7 +3,9 @@ package com.qunar.spark.diff.internal.impl.regular.jackson.element
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node._
 import com.qunar.spark.diff.base.ReAssignableArrayBuffer
-import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element, UnitElement}
+import com.qunar.spark.diff.base.regular.elements.unit.UnitElement
+import com.qunar.spark.diff.base.regular.elements.Element
+import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
 
 /**
   * 让Jackson JsonNode适配Element的驱动接口

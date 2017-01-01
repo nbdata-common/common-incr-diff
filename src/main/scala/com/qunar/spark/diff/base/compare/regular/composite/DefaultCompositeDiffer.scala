@@ -3,7 +3,7 @@ package com.qunar.spark.diff.base.compare.regular.composite
 import javax.validation.constraints.NotNull
 
 import com.qunar.spark.diff.base.compare.regular.AbstractDiffer
-import com.qunar.spark.diff.base.regular.elements.CompositeElement
+import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
 
 /**
   * [[CompositeElement]]的默认diff比较器

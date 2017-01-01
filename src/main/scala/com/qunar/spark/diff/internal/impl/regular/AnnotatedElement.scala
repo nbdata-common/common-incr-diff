@@ -7,7 +7,7 @@ import com.qunar.spark.diff.base.regular.elements.ext.api.ExtElement
 import com.qunar.spark.diff.ext.AnnotationAware
 
 /**
-  * [功能拓展] 递归结构中,拥有注解感知能力的元素
+  * ''[功能拓展]'' 递归结构中,拥有注解感知能力的元素
   *
   * @param field            这里在构造器中直接引入field,以简化类的结构,然后将具体的构造过程交给伴生对象的工厂方法
   * @param decoratedElement 被装饰的元素,这里设置为可变型的,是为了能够复用实例,节约内存空间

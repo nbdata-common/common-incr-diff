@@ -1,7 +1,9 @@
-package com.qunar.spark.diff.base.regular.elements
+package com.qunar.spark.diff.base.regular.elements.composite
+
+import com.qunar.spark.diff.base.regular.elements.Element
 
 /**
-  * 规则(递归)结构中的复合元素(可继续拆分成Composite或Unit)
+  * 递归结构中的复合元素(可继续拆分成[[CompositeElement]]或[[com.qunar.spark.diff.base.regular.elements.unit.UnitElement]])
   */
 trait CompositeElement extends Element {
 

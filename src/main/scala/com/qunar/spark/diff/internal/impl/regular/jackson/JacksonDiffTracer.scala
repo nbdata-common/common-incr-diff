@@ -3,7 +3,9 @@ package com.qunar.spark.diff.internal.impl.regular.jackson
 import com.fasterxml.jackson.databind.JsonNode
 import com.qunar.spark.diff.base.ReAssignableArrayBuffer
 import com.qunar.spark.diff.base.compare.regular.Differ
-import com.qunar.spark.diff.base.regular.elements.{CompositeElement, Element, UnitElement}
+import com.qunar.spark.diff.base.regular.elements.unit.UnitElement
+import com.qunar.spark.diff.base.regular.elements.Element
+import com.qunar.spark.diff.base.regular.elements.composite.{ArrayElement, CompositeElement}
 import com.qunar.spark.diff.base.sort.Sorter
 import com.qunar.spark.diff.internal.impl.regular.{AnnotatedElement, RegularDiffTracer}
 import com.qunar.spark.diff.internal.impl.regular.jackson.element.JacksonElementDriver
@@ -13,7 +15,7 @@ import scala.collection.mutable
 import scala.reflect.ClassTag
 
 /**
-  * 适用于Jackson的DiffTracer实现类
+  * 适用于Jackson的[[com.qunar.spark.diff.api.scala.DiffTracer]]实现类[[JacksonDiffTracer]]
   */
 private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val sorter: Sorter) extends RegularDiffTracer[T] {
 
@@ -46,7 +48,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
   }
 
   /**
-    * 对外开放的第二种api:  以JsonNode为入参作diff比较
+    * 对外开放的第二类api:  以[[JsonNode]]为入参作diff比较
     *
     * NOTICE: 当外部直接调用此api时,将不会开启注解增强功能
     * 若想使用注解增强,请使用:[[com.qunar.spark.diff.api.scala.DiffTracer.isDifferent]]
@@ -59,7 +61,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
   /* inner implement */
 
   /**
-    * 将java bean转为JsonNode
+    * 将java bean转为[[JsonNode]]
     */
   private def beanToJsonNode(target: T): JsonNode = {
     JsonMapper.readTree(JsonMapper.writeValueAsString(target))
@@ -71,15 +73,15 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
   private def isDifferentInternal(target1: JsonNode, target2: JsonNode, wrapElement: (Element) => Element = direct): Boolean = {
     val node1 = jsonNodeToElement(target1, wrapElement)
     val node2 = jsonNodeToElement(target2, wrapElement)
-    isDifferent(node1, node2)
+    isElementDifferent(node1, node2)
   }
 
   /**
-    * JacksonDiffTracer的核心逻辑: 将JsonNode转换为Element
-    * 这里使用显式堆栈的递归方式创建Element的层次关系,以提高程序执行的效率,映射到JsonNode的层次关系
+    * [[JacksonDiffTracer]]的核心逻辑: 将[[JsonNode]]转换为[[Element]]
+    * 这里使用显式堆栈的递归方式创建[[Element]]的层次关系,以提高程序执行的效率,映射到[[JsonNode]]的层次关系
     * <p/>
-    * 堆栈的填充内容类型是(JsonNode, Element),其代表的意义是:
-    * 某个JsonNode所对应的Element
+    * 堆栈的填充内容类型是([[JsonNode]], [[Element]]),其代表的意义是:
+    * 某个[[JsonNode]]所对应的[[Element]]
     */
   private def jsonNodeToElement(node: JsonNode, wrapElement: (Element) => Element): Element = {
     /* 初始化 */
@@ -100,6 +102,10 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
       // 栈顶元组的第二项:Element
       val topElement = pointer._2
       topElement match {
+        // 映射到CompositeElement的子类型ArrayElement的处理
+        case topElement: ArrayElement => //todo
+
+        // 映射到除了ArrayElement的其他CompositeElement类型的处理
         case topElement: CompositeElement =>
           // entries的类型:(String, JsonNode)
           val entries = JacksonElementDriver.childrenNodesWithName(pointer._1)
@@ -113,6 +119,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
           // 设置孩子Elements
           topElement.setChildrenElements(childrenElements.compactCopy)
 
+        // 映射到UnitElement类型
         case topElement: UnitElement[_] => // 其他情况作空处理
       }
     }
@@ -130,7 +137,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
   private def direct(element: Element): Element = element
 
   /**
-    * 将元素包装为注解感知的元素
+    * 将元素包装为注解感知([[com.qunar.spark.diff.ext.AnnotationAware]])的元素
     */
   private def annotatedWrap(element: Element): Element = AnnotatedElement(element, clazz)
 

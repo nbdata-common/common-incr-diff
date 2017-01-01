@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.NumericNode
 import com.qunar.spark.diff.base.GenericNumber
-import com.qunar.spark.diff.base.regular.elements.NumericElement
+import com.qunar.spark.diff.base.regular.elements.unit.NumericElement
 
 /**
   * 适用于Jackson的NumericElement

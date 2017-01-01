@@ -2,7 +2,7 @@ package com.qunar.spark.diff.internal.impl.regular.jackson.element
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.TextNode
-import com.qunar.spark.diff.base.regular.elements.TextElement
+import com.qunar.spark.diff.base.regular.elements.unit.TextElement
 
 /**
   * 适用于Jackson的TextElement
