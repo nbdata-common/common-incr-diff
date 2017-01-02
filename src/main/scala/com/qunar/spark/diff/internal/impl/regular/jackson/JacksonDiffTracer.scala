@@ -1,6 +1,7 @@
 package com.qunar.spark.diff.internal.impl.regular.jackson
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.qunar.spark.diff.api.enums.DifferType
 import com.qunar.spark.diff.base.ReAssignableArrayBuffer
 import com.qunar.spark.diff.base.compare.regular.Differ
 import com.qunar.spark.diff.base.regular.elements.unit.UnitElement
@@ -40,11 +41,14 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
 
   /**
     * 实现[[com.qunar.spark.diff.api.scala.DiffTracer]]中的public方法
+    * <p/>
+    * NOTICE: 传给[[isDifferentInternal]]方法的第三个参数ElementWrapper,这里使用了
+    * [[adaptiveWrapper]],主要是为了根据装配的[[Differ]]灵活地控制包装的深度,以确保性能
     */
   override def isDifferent(targetLeft: T, targetRight: T): Boolean = {
     val nodeLeft = beanToJsonNode(targetLeft)
     val nodeRight = beanToJsonNode(targetRight)
-    isDifferentInternal(nodeLeft, nodeRight, annotatedWrap _)
+    isDifferentInternal(nodeLeft, nodeRight, adaptiveWrapper)
   }
 
   /**
@@ -69,6 +73,10 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
 
   /**
     * 内部的isDifferent处理
+    *
+    * @param wrapElement 这是一个对[[Element]]的包装函数,用于扩展[[Element]]的功能,以对应
+    *                    [[com.qunar.spark.diff.base.compare.regular.AbstractDiffer]]的
+    *                    继承者们的各种diff规则.
     */
   private def isDifferentInternal(target1: JsonNode, target2: JsonNode, wrapElement: (Element) => Element = direct): Boolean = {
     val node1 = jsonNodeToElement(target1, wrapElement)
@@ -130,6 +138,20 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
 
 
   /* element wrapper functions */
+
+  /**
+    * 适应性地对[[Element]]包装
+    * 根据传入的[[Differ]]适应性地选择最轻量化的包装函数,以提升diff性能
+    */
+  private val adaptiveWrapper: (Element) => Element = {
+    val annotatedDifferType = Seq(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DIFF_RANGE, DifferType.COMPOSITE_DIFF_IGNORE)
+    if (innerDiffer.differChainSnapshot.forall(differType => {
+      if (!annotatedDifferType.contains(differType)) false else true
+    }))
+      direct
+    else
+      annotatedWrap
+  }
 
   /**
     * 直接将元素作directly透传

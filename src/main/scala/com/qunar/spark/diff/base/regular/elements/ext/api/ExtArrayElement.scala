@@ -1,14 +1,14 @@
 package com.qunar.spark.diff.base.regular.elements.ext.api
 
 import com.qunar.spark.diff.base.regular.elements.Element
-import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
+import com.qunar.spark.diff.base.regular.elements.composite.ArrayElement
 
 /**
-  * [[CompositeElement]]的拓展接口
+  * [[ArrayElement]]的拓展接口
   *
   * 引入一个被装饰者[[decoratedElement]],并在其上包装方法,拓展功能
   */
-abstract class ExtCompositeElement(private val decoratedElement: CompositeElement) extends CompositeElement {
+abstract class ExtArrayElement(private val decoratedElement: ArrayElement) extends ArrayElement {
 
   override def getName: String = decoratedElement.getName
 

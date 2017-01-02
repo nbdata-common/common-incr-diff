@@ -5,8 +5,8 @@ import com.qunar.spark.diff.base.regular.elements.Element
 import com.qunar.spark.diff.base.regular.elements.unit.UnitElementType.UnitElementType
 
 /**
-  * 在规则(递归)结构中,表征一个原子元素(即单元节点,不可继续拆分)
-  * 单元节点必须满足:其唯一映射到一个T类型的value,该value已实现Comparable[T]
+  * 在递归结构中,表征一个原子元素(即单元节点,不可继续拆分)
+  * 单元节点必须满足:其唯一映射到一个T类型的value,该value已实现[[Comparable[T] ]]
   */
 trait UnitElement[T <: Comparable[T]] extends Element {
 
@@ -29,9 +29,9 @@ trait UnitElement[T <: Comparable[T]] extends Element {
 object UnitElement {
 
   /**
-    * 获得UnitElement的实际枚举类型(Numeric,Text或Boolean)
+    * 获得[[UnitElement]]的实际枚举类型(Numeric,Text或Boolean)
     *
-    * @return UnitElement的枚举类型[[UnitElementType]]
+    * @return [[UnitElement]]的枚举类型[[UnitElementType]]
     */
   def actualType(element: UnitElement[_]): UnitElementType = {
     Preconditions.checkNotNull[Element](element)
@@ -45,7 +45,7 @@ object UnitElement {
 }
 
 /**
-  * UnitElement的枚举类型(Numeric,Text或Boolean)
+  * [[UnitElement]]的枚举类型(Numeric,Text或Boolean)
   */
 object UnitElementType extends Enumeration {
 

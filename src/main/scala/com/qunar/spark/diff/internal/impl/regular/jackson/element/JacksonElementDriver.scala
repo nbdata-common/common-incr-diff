@@ -8,32 +8,32 @@ import com.qunar.spark.diff.base.regular.elements.Element
 import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
 
 /**
-  * 让Jackson JsonNode适配Element的驱动接口
+  * 让Jackson [[JsonNode]]适配[[Element]]的驱动接口
   *
   * [[JsonNode]]的继承结构如下:
-  * * 1 -- JsonNode
-  * *   1.1 -- BaseJsonNode
-  * *     1.1.1 -- ContainerNode
-  * *       1.1.1.1 -- ArrayNode
-  * *       1.1.1.2 -- ObjectNode
-  * *     1.1.2 -- ValueNode
-  * *       1.1.2.1 -- BooleanNode
-  * *       1.1.2.2 -- TextNode
-  * *       1.1.2.3 -- NumericNode
-  * *         1.1.2.3.x -- {IntNode,LongNode,DoubleNode,FloatNode,ShortNode ...}
+  * * 1 -- [[JsonNode]]
+  * *   1.1 -- [[BaseJsonNode]]
+  * *     1.1.1 -- [[ContainerNode]]
+  * *       1.1.1.1 -- [[ArrayNode]]
+  * *       1.1.1.2 -- [[ObjectNode]]
+  * *     1.1.2 -- [[ValueNode]]
+  * *       1.1.2.1 -- [[BooleanNode]]
+  * *       1.1.2.2 -- [[TextNode]]
+  * *       1.1.2.3 -- [[NumericNode]]
+  * *         1.1.2.3.x -- {[[IntNode]],[[LongNode]],[[DoubleNode]],[[FloatNode]],[[ShortNode]]...}
   *
   * 我们将会以JsonNode的继承结构为基础,实现从[[JsonNode]]到[[com.qunar.spark.diff.base.regular.elements.Element]]的映射.
   */
 private[jackson] object JacksonElementDriver {
 
   /**
-    * 用于[[childrenNodesWithName]]存储JsonNode数据
+    * 用于[[childrenNodesWithName]]存储[[JsonNode]]数据
     * NOTICE: 此组件是线程不安全的
     */
   private val jsonNodesBuffer = ReAssignableArrayBuffer[(String, JsonNode)](32)
 
   /**
-    * 列举出给定jsonNode下的所有子JsonNode
+    * 列举出给定[[JsonNode]]下的所有子[[JsonNode]]
     */
   def childrenNodesWithName(jsonNode: JsonNode): Iterable[(String, JsonNode)] = {
     jsonNodesBuffer.reset()
@@ -94,7 +94,7 @@ private[jackson] object JacksonElementDriver {
   }
 
   /**
-    * 转换成CompositeElement
+    * 转换成[[CompositeElement]]
     */
   def toCompositeElement(jsonNode: JsonNode, name: String): CompositeElement = {
     jsonNode match {
@@ -105,7 +105,7 @@ private[jackson] object JacksonElementDriver {
   }
 
   /**
-    * 转换成UnitElement
+    * 转换成[[UnitElement]]
     */
   def toUnitElement(jsonNode: JsonNode, name: String): UnitElement[_] = {
     jsonNode match {
