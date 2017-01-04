@@ -4,9 +4,9 @@ import com.qunar.spark.diff.base.regular.elements.Element
 import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
 
 /**
-  * 适用于Jackson的CompositeElement
+  * 适用于Jackson的[[CompositeElement]]
   */
-private[jackson] final class JacksonCompositeElement(private var interChildrenElements: Seq[Element],
+private[jackson] final class JacksonCompositeElement(@volatile private var interChildrenElements: Seq[Element],
                                                      private val name: String) extends CompositeElement {
 
   def this(name: String) = this(Seq(), name)

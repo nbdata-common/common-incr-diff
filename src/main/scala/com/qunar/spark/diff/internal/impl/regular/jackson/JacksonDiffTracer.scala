@@ -6,7 +6,7 @@ import com.qunar.spark.diff.base.ReAssignableArrayBuffer
 import com.qunar.spark.diff.base.compare.regular.Differ
 import com.qunar.spark.diff.base.regular.elements.unit.UnitElement
 import com.qunar.spark.diff.base.regular.elements.Element
-import com.qunar.spark.diff.base.regular.elements.composite.{ArrayElement, CompositeElement}
+import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
 import com.qunar.spark.diff.base.sort.Sorter
 import com.qunar.spark.diff.internal.impl.regular.{AnnotatedElement, RegularDiffTracer}
 import com.qunar.spark.diff.internal.impl.regular.jackson.element.JacksonElementDriver
@@ -28,13 +28,6 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
   override protected val innerDiffer: Differ = differ
 
   override protected val innerSorter: Sorter = sorter
-
-  // 传入的bean所对应的Class
-  private val clazz = getClassT
-
-  private def getClassT(implicit ct: ClassTag[T]): Class[_] = {
-    ct.runtimeClass
-  }
 
 
   /* main api */
@@ -110,10 +103,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
       // 栈顶元组的第二项:Element
       val topElement = pointer._2
       topElement match {
-        // 映射到CompositeElement的子类型ArrayElement的处理
-        case topElement: ArrayElement => //todo
-
-        // 映射到除了ArrayElement的其他CompositeElement类型的处理
+        // 映射到CompositeElement类型
         case topElement: CompositeElement =>
           // entries的类型:(String, JsonNode)
           val entries = JacksonElementDriver.childrenNodesWithName(pointer._1)

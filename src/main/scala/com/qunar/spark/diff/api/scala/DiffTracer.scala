@@ -57,8 +57,8 @@ object DiffTracer {
     * for example: <pre> {
     *
     * val diffTracer = DiffTracer.builder()
-    * * .unitDifferTypes(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DEFAULT)
-    * * .compositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
+    * * .setUnitDifferTypes(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DEFAULT)
+    * * .setCompositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
     * * .build
     *
     * } </pre>
@@ -80,9 +80,9 @@ object DiffTracer {
       * 的比较器种类.
       * <p/>
       * NOTICE: [[UnitDifferType*]]类型的可变参数将被转换为一个[[Seq]],送往比较器链构造工厂后将按照序列中给出
-      * 的类型顺序构造比较器链,[[compositeDifferTypes]]方法同理.
+      * 的类型顺序构造比较器链,[[setCompositeDifferTypes]]方法同理.
       */
-    def unitDifferTypes(differTypes: UnitDifferType*): this.type = {
+    def setUnitDifferTypes(differTypes: UnitDifferType*): this.type = {
       for (differType <- differTypes) {
         unitDifferTypes += differType
       }
@@ -93,7 +93,7 @@ object DiffTracer {
       * 以可变参数列表的形式指定加入[[com.qunar.spark.diff.base.compare.regular.composite.CompositeDiffer]]
       * 比较器链的比较器种类.
       */
-    def compositeDifferTypes(differTypes: CompositeDifferType*): this.type = {
+    def setCompositeDifferTypes(differTypes: CompositeDifferType*): this.type = {
       for (differType <- differTypes) {
         compositeDifferTypes += differType
       }
@@ -129,8 +129,8 @@ object DiffTracer {
     */
   def isDifferent(targetLeft: JsonNode, targetRight: JsonNode): Boolean = {
     val diffTracer = builder[Boolean]()
-      .unitDifferTypes(DifferType.UNIT_DEFAULT)
-      .compositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
+      .setUnitDifferTypes(DifferType.UNIT_DEFAULT)
+      .setCompositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
       .build
 
     diffTracer.asInstanceOf[JacksonDiffTracer[Boolean]].isDifferent(targetLeft, targetRight)

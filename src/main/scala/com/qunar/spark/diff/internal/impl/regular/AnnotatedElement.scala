@@ -32,6 +32,12 @@ trait AnnotatedElement extends AnnotationAware {
 }
 
 /**
+  * 以下三个类为[[AnnotatedElement]]的三种实现类
+  * 之所以要定义三个内容大致相同的实现类,是考虑到scala的语法限制:不能继承两个或两个以上的class/abstract class
+  * 为了能够区分不同类型的[[AnnotatedElement]],此处不得不作如下处理.
+  */
+
+/**
   * 适用于[[UnitElement]]的注解装饰拓展类
   */
 final class AnnotatedUnitElement[T <: Comparable[T]](private var decoratedElement: UnitElement[T],

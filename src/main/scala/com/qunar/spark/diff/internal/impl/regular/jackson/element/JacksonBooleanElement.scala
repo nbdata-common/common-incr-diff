@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.BooleanNode
 import com.qunar.spark.diff.base.regular.elements.unit.BooleanElement
 
 /**
-  * 适用于Jackson的BooleanElement
+  * 适用于Jackson的[[BooleanElement]]
   */
 private[jackson] final class JacksonBooleanElement(@volatile private var interValue: Boolean,
                                                    private val name: String) extends BooleanElement(interValue) {

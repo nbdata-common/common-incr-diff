@@ -42,8 +42,8 @@ class ScalaTest {
 
   def isDifferent[T <: Comparable[T]](a: UnitElement[T], b: UnitElement[T]): Boolean = {
     val diffTracer = DiffTracer.builder()
-      .unitDifferTypes(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DEFAULT)
-      .compositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
+      .setUnitDifferTypes(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DEFAULT)
+      .setCompositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
       .build
     false
   }

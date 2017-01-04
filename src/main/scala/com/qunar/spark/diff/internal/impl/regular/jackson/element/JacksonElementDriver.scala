@@ -98,7 +98,8 @@ private[jackson] object JacksonElementDriver {
     */
   def toCompositeElement(jsonNode: JsonNode, name: String): CompositeElement = {
     jsonNode match {
-      case jsonNode: ContainerNode[_] => JacksonCompositeElement(name)
+      case jsonNode: ObjectNode => JacksonCompositeElement(name)
+      case jsonNode: ArrayNode => JacksonArrayElement(name)
       case _ => throw new IllegalArgumentException(
         "the jsonNode param does not confirm to the correct type BooleanNode which JacksonBooleanElement needs")
     }

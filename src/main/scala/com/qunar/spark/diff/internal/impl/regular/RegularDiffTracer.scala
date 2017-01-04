@@ -21,6 +21,13 @@ abstract class RegularDiffTracer[T: ClassTag] extends DiffTracer[T] {
   // 用于diff的字段排序器,由子类负责实例化
   protected val innerSorter: Sorter
 
+  // 传入的bean所对应的Class
+  protected val clazz = getClassT
+
+  private def getClassT(implicit ct: ClassTag[T]): Class[_] = {
+    ct.runtimeClass
+  }
+
   /**
     * 统一递归结构的diff方法
     * <p/>

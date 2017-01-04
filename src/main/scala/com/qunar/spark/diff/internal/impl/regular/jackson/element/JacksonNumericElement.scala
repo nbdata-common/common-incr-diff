@@ -7,7 +7,7 @@ import com.qunar.spark.diff.base.GenericNumber
 import com.qunar.spark.diff.base.regular.elements.unit.NumericElement
 
 /**
-  * 适用于Jackson的NumericElement
+  * 适用于Jackson的[[NumericElement]]
   */
 private[jackson] final class JacksonNumericElement(@volatile private var interValue: GenericNumber,
                                                    private val name: String) extends NumericElement(interValue) {

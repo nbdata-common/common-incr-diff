@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.TextNode
 import com.qunar.spark.diff.base.regular.elements.unit.TextElement
 
 /**
-  * 适用于Jackson的TextElement
+  * 适用于Jackson的[[TextElement]]
   */
 private[jackson] final class JacksonTextElement(@volatile private var interValue: String,
                                                 private val name: String) extends TextElement(interValue) {

@@ -20,7 +20,7 @@ import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
   *                        <p/>
   * @note [[unitDiffer]]与[[compositeDiffer]]两个成员都没有被指明为具体的类型[[UnitDiffer]]与[[CompositeDiffer]],
   *       因为针对[[UnitElement]]或[[CompositeElement]]类型的比较器链中的每一个比较器的类型并非都是[[UnitDiffer]]
-  *       或[[CompositeDiffer]],比如[[DiffIgnoreDiffer]]这样的注解增强Differ.在将来的拓展中,这中情况就更为显著.
+  *       或[[CompositeDiffer]],比如[[DiffIgnoreDiffer]]这样的注解增强Differ.在将来的拓展中,这种情况就更为显著.
   *       所以这里只将其限定为[[AbstractDiffer]].
   */
 private[diff] sealed abstract class Differ private(private val unitDiffer: AbstractDiffer,
