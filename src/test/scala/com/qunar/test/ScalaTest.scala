@@ -14,6 +14,7 @@ class ScalaTest {
 
   @org.junit.Test
   def test(): Unit = {
+    val b = DiffTracer.builder[Boolean]()
     val a: CompositeElement = new CompositeElement {
       override def getName: String = "sss"
 
@@ -25,7 +26,7 @@ class ScalaTest {
       case a: JavaTest => a.getName
       case a: CompositeElement => a.getName
     }
-    val ddd: DiffTracer[Long] = DiffTracer[Long]()
+//    val ddd: DiffTracer[Long] = DiffTracer[Long]()
   }
 
   @org.junit.Test

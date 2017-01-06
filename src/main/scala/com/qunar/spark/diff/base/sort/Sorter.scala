@@ -8,7 +8,7 @@ trait Sorter {
   /**
     * 对指定的target序列排序并返回有序的序列结果
     */
-  def sort[T <: Comparable[T]](target: Seq[T]): Seq[T]
+  def sort[E <: Comparable[E]](target: Seq[E]): Seq[E]
 
 }
 

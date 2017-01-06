@@ -8,16 +8,18 @@ import scala.reflect.ClassTag;
 
 /**
  * java api: 适用于Java语言的DifferTracer
+ *
+ * @see com.qunar.spark.diff.api.scala.DiffTracer
  */
 public final class JavaDiffTracer<T> {
 
     /**
-     * 内部维护一个DiffTracer实例
+     * 内部维护一个{@link DiffTracer}实例
      */
     private DiffTracer<T> innerDiffTracer;
 
     /**
-     * 构造器私有化,控制内部行为
+     * 构造器私有化,用以控制内部行为
      */
     private JavaDiffTracer(DiffTracer<T> diffTracer) {
         this.innerDiffTracer = diffTracer;
@@ -56,20 +58,35 @@ public final class JavaDiffTracer<T> {
     }
 
     /**
+     * {@link com.qunar.spark.diff.base.compare.regular.Differ}的枚举类型
+     * 此枚举类是{@link com.qunar.spark.diff.api.enums.DifferType}的java克隆版本,便于java开发者调用
+     */
+    @SuppressWarnings("unused")
+    public enum DifferType {
+
+        // 忽略UnitElement字段
+        UNIT_DIFF_IGNORE,
+        // 允许UnitElement字段在指定范围内差异
+        UNIT_DIFF_RANGE,
+        // UnitElement默认的比较:即绝对相等
+        UNIT_DEFAULT,
+
+        // 忽略CompositeElement字段
+        COMPOSITE_DIFF_IGNORE,
+        // 强制CompositeElement字段的容器内元素有序
+        COMPOSITE_SORT,
+        // CompositeElement默认的比较:即name相同
+        COMPOSITE_DEFAULT,
+
+    }
+
+    /**
      * scala-java转换的驱动封装,隐藏复杂的scala api调用
      */
     private static final class ScalaConverterDriver {
 
         /**
-         * 默认的{@link DiffTracer}实现:{@link JacksonDiffTracer}
-         */
-        private static <T> DiffTracer<T> defaultDiffTracer() {
-            ClassTag<T> tag = getClassTagOfT();
-            return DiffTracer$.MODULE$.apply(tag);
-        }
-
-        /**
-         * 使用Jackson的{@link TypeReference}获得泛型T所对应的实际类型
+         * 借用Jackson的{@link TypeReference}获得泛型T所对应的实际类型
          */
         @SuppressWarnings("unchecked")
         private static <T> Class<T> getClassOfT() {
@@ -82,6 +99,14 @@ public final class JavaDiffTracer<T> {
          */
         private static <T> ClassTag<T> getClassTagOfT() {
             return scala.reflect.ClassTag$.MODULE$.apply(getClassOfT());
+        }
+
+        /**
+         * 默认的{@link DiffTracer}实现:{@link JacksonDiffTracer}
+         */
+        private static <T> DiffTracer<T> defaultDiffTracer() {
+            ClassTag<T> tag = getClassTagOfT();
+            return DiffTracer$.MODULE$.apply(tag);
         }
 
     }

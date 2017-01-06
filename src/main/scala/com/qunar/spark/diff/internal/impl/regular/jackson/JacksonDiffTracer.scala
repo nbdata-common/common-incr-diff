@@ -8,7 +8,8 @@ import com.qunar.spark.diff.base.regular.elements.unit.UnitElement
 import com.qunar.spark.diff.base.regular.elements.Element
 import com.qunar.spark.diff.base.regular.elements.composite.CompositeElement
 import com.qunar.spark.diff.base.sort.Sorter
-import com.qunar.spark.diff.internal.impl.regular.{AnnotatedElement, RegularDiffTracer}
+import com.qunar.spark.diff.internal.impl.WRAPPER
+import com.qunar.spark.diff.internal.impl.regular.RegularDiffTracer
 import com.qunar.spark.diff.internal.impl.regular.jackson.element.JacksonElementDriver
 import com.qunar.spark.diff.internal.impl.regular.jackson.json.JsonMapper
 
@@ -51,7 +52,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
     * 若想使用注解增强,请使用:[[com.qunar.spark.diff.api.scala.DiffTracer.isDifferent]]
     */
   def isDifferent(targetLeft: JsonNode, targetRight: JsonNode): Boolean = {
-    isDifferentInternal(targetLeft, targetRight, direct _)
+    isDifferentInternal(targetLeft, targetRight, elementWrapper.DIRECT)
   }
 
 
@@ -71,7 +72,7 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
     *                    [[com.qunar.spark.diff.base.compare.regular.AbstractDiffer]]的
     *                    继承者们的各种diff规则.
     */
-  private def isDifferentInternal(target1: JsonNode, target2: JsonNode, wrapElement: (Element) => Element = direct): Boolean = {
+  private def isDifferentInternal(target1: JsonNode, target2: JsonNode, wrapElement: (Element) => Element = elementWrapper.DIRECT): Boolean = {
     val node1 = jsonNodeToElement(target1, wrapElement)
     val node2 = jsonNodeToElement(target2, wrapElement)
     isElementDifferent(node1, node2)
@@ -127,30 +128,25 @@ private[diff] final class JacksonDiffTracer[T: ClassTag](val differ: Differ, val
   }
 
 
-  /* element wrapper functions */
+  /* element wrapper function */
+
+  // 带注解增强能力的Differ汇总
+  val ANNOTATED_DIFFER_TYPES = Seq(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DIFF_RANGE, DifferType.COMPOSITE_DIFF_IGNORE)
 
   /**
     * 适应性地对[[Element]]包装
     * 根据传入的[[Differ]]适应性地选择最轻量化的包装函数,以提升diff性能
     */
-  private val adaptiveWrapper: (Element) => Element = {
-    val annotatedDifferType = Seq(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DIFF_RANGE, DifferType.COMPOSITE_DIFF_IGNORE)
-    if (innerDiffer.differChainSnapshot.forall(differType => {
-      if (!annotatedDifferType.contains(differType)) false else true
-    }))
-      direct
-    else
-      annotatedWrap
+  private val adaptiveWrapper: WRAPPER = {
+    val wrapperBuilder = elementWrapper.wrapBuilder
+
+    if (innerDiffer.differChainSnapshot.forall(differType => !ANNOTATED_DIFFER_TYPES.contains(differType))) {
+      wrapperBuilder.addWrapper(elementWrapper.DIRECT)
+    } else {
+      wrapperBuilder.addWrapper(elementWrapper.ANNOTATED_WRAPPER)
+    }
+
+    wrapperBuilder.build
   }
-
-  /**
-    * 直接将元素作directly透传
-    */
-  private def direct(element: Element): Element = element
-
-  /**
-    * 将元素包装为注解感知([[com.qunar.spark.diff.ext.AnnotationAware]])的元素
-    */
-  private def annotatedWrap(element: Element): Element = AnnotatedElement(element, clazz)
 
 }

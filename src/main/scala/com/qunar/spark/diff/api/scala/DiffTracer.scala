@@ -56,7 +56,7 @@ object DiffTracer {
     * <p/>
     * for example: <pre> {
     *
-    * val diffTracer = DiffTracer.builder()
+    * val diffTracer = DiffTracer.builder[T]()
     * * .setUnitDifferTypes(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DEFAULT)
     * * .setCompositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
     * * .build
@@ -83,9 +83,7 @@ object DiffTracer {
       * 的类型顺序构造比较器链,[[setCompositeDifferTypes]]方法同理.
       */
     def setUnitDifferTypes(differTypes: UnitDifferType*): this.type = {
-      for (differType <- differTypes) {
-        unitDifferTypes += differType
-      }
+      unitDifferTypes ++= differTypes
       this
     }
 
@@ -94,9 +92,7 @@ object DiffTracer {
       * 比较器链的比较器种类.
       */
     def setCompositeDifferTypes(differTypes: CompositeDifferType*): this.type = {
-      for (differType <- differTypes) {
-        compositeDifferTypes += differType
-      }
+      compositeDifferTypes ++= differTypes
       this
     }
 
