@@ -56,7 +56,7 @@ object DiffTracer {
     * <p/>
     * for example: <pre> {
     *
-    * val diffTracer = DiffTracer.builder()
+    * val diffTracer = DiffTracer.builder[T]()
     * * .setUnitDifferTypes(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DEFAULT)
     * * .setCompositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
     * * .build
