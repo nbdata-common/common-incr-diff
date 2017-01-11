@@ -33,14 +33,14 @@ private[regular] class ElementWrapper[T: ClassTag] {
   /**
     * 用于构造[[WRAPPER]]包装函数链,可以自己customize将哪些[[WRAPPER]]加入至链中
     * <p/>
-    * for example: <pre> {
+    * for example: <pre> {{{
     *
     * val wrapper = ElementWrapper.wrapBuilder
-    * * .addWrapper(ElementWrapper.ANNOTATED_WRAPPER)
-    * * .addWrapper(ElementWrapper.DIRECT)
-    * * .build
+    *   .addWrapper(ElementWrapper.ANNOTATED_WRAPPER)
+    *   .addWrapper(ElementWrapper.DIRECT)
+    *   .build
     *
-    * } </pre>
+    * }}} </pre>
     */
   class WrapperBuilder {
 

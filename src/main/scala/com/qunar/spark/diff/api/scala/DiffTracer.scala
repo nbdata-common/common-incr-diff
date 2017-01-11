@@ -54,14 +54,14 @@ object DiffTracer {
     * 与[[com.qunar.spark.diff.base.compare.regular.composite.CompositeDiffer]]
     * 的构成成员
     * <p/>
-    * for example: <pre> {
+    * for example: <pre> {{{
     *
     * val diffTracer = DiffTracer.builder[T]()
-    * * .setUnitDifferTypes(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DEFAULT)
-    * * .setCompositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
-    * * .build
+    *   .setUnitDifferTypes(DifferType.UNIT_DIFF_IGNORE, DifferType.UNIT_DEFAULT)
+    *   .setCompositeDifferTypes(DifferType.COMPOSITE_DEFAULT)
+    *   .build
     *
-    * } </pre>
+    * }}} </pre>
     * <p/>
     * NOTICE: 对于一般的情况,默认的[[apply]]方法已经足够使用
     */
