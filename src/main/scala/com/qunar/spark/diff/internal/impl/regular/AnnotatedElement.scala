@@ -17,7 +17,7 @@ import com.qunar.spark.diff.ext.AnnotationAware
   * @note field, decoratedElement 这种类似的设计在[[com.qunar.spark.diff.internal]]包的其他类中也有体现:
   * @see [[com.qunar.spark.diff.internal.impl.regular.jackson.element]]
   */
-trait AnnotatedElement extends AnnotationAware {
+sealed trait AnnotatedElement extends AnnotationAware {
 
   protected var innerDecoratedElement: Element
 
